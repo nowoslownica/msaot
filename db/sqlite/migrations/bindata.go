@@ -94,7 +94,7 @@ func _000001_msaotDownSql() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "000001_msaot.down.sql", size: 48, mode: os.FileMode(436), modTime: time.Unix(1603700930, 0)}
+	info := bindataFileInfo{name: "000001_msaot.down.sql", size: 48, mode: os.FileMode(436), modTime: time.Unix(1603737496, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -114,7 +114,7 @@ func _000001_msaotUpSql() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "000001_msaot.up.sql", size: 2876, mode: os.FileMode(436), modTime: time.Unix(1603705371, 0)}
+	info := bindataFileInfo{name: "000001_msaot.up.sql", size: 2876, mode: os.FileMode(436), modTime: time.Unix(1603740717, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }

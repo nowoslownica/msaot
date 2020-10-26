@@ -26,7 +26,7 @@ func MigrateSchema(conn string) error {
 		return err
 	}
 	defer targetInstance.Close()
-	m, err := migrate.NewWithInstance("go-bindata", sourceInstance, "", targetInstance)
+	m, err := migrate.NewWithInstance("go-bindata", sourceInstance, "msaot", targetInstance)
 	if err != nil {
 		return err
 	}

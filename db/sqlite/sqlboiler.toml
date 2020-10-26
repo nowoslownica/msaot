@@ -1,5 +1,7 @@
-output   = "../modelss"
+output   = "../models"
+wipe = true
 no-tests = true
+no-hooks = true
 
 [sqlite3]
-  dbname = "../../test-db"
+  dbname = "../test-db.db"
