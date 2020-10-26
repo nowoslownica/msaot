@@ -1,11 +1,12 @@
 package db
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestInitDB(t *testing.T) {
 	err := InitDB()
-	fmt.Println(err)
+	if err != nil {
+		t.Error(err)
+	}
 }

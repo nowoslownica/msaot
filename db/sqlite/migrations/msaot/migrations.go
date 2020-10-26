@@ -7,7 +7,7 @@ import (
 	bindata "github.com/golang-migrate/migrate/v4/source/go_bindata"
 )
 
-//go:generate go run github.com/go-bindata/go-bindata/v3/go-bindata -pkg msaot -ignore .*\.go -o bindata.go ./...
+//go:generate go run github.com/go-bindata/go-bindata/v3/go-bindata -pkg msaot -prefix "sqlite/migrations/msaot" -ignore .*\.go -o bindata.go ./...
 //go:generate go fmt bindata.go
 
 // MigrateSchema update db schema to last version saved with go-bindata
@@ -26,7 +26,7 @@ func MigrateSchema(conn string) error {
 		return err
 	}
 	defer targetInstance.Close()
-	m, err := migrate.NewWithInstance("go-bindata", sourceInstance, "ql", targetInstance)
+	m, err := migrate.NewWithInstance("go-bindata", sourceInstance, "", targetInstance)
 	if err != nil {
 		return err
 	}
