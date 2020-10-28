@@ -30,7 +30,6 @@ func MigrateSchema(conn string) error {
 	if err != nil {
 		return err
 	}
-	// here error
 	err = m.Up()
 	if err != nil && err != migrate.ErrNoChange {
 		return err
