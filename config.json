@@ -1,0 +1,28 @@
+{
+  "Cases": {
+    "1": "nom",
+    "2": "gen",
+    "3": "acc",
+    "4": "dat",
+    "5": "instr",
+    "6": "loc",
+    "7": "voc"
+  },
+  "Tenses": {
+    "1": "present",
+    "2": "future",
+    "3": "aorist",
+    "4": "imperfect",
+    "5": "perfect_1",
+    "6": "perfect_2"
+  },
+  "Persons": {
+    "1": "first",
+    "2": "second",
+    "3": "third"
+  },
+  "Numbers": {
+    "1": "singular",
+    "2": "plural"
+  }
+}
