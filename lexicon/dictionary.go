@@ -1,5 +1,18 @@
 package lexicon
 
-func GetFlexForm(word string)  {
+import (
+	"github.com/eakarpov/msaot/db"
+	"github.com/eakarpov/msaot/db/dblib"
+)
 
+func initMain() (dblib.DB, db.closeFunc, error) {
+	mainDB := db.New()
+	err := mainDB.Init()
+	if err != nil {
+		return nil, nil, err
+	}
+	return mainDB, mainDB.Close, nil
+}
+
+func GetFlexForm(word string)  {
 }
