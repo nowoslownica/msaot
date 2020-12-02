@@ -3,7 +3,8 @@ package lexicon
 type Case int
 
 const (
-	NOMINATIVE Case = iota
+	_ Case = iota
+	NOMINATIVE
 	GENITIVE
 	PARTITIVE
 	ACCUSATIVE
@@ -28,3 +29,9 @@ const (
 	FUTURE_IN_THE_PAST
 )
 
+type POS string
+
+const (
+	NOUN = "n"
+	VERB = "v"
+)

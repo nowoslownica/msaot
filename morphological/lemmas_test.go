@@ -12,10 +12,12 @@ func TestNormalize(t *testing.T) {
 		return
 	}
 	lemma, err := Normalize("мамы", FlexyConfig{
-		POS: "n",
-		Type: "1",
-		Case: "Genitive",
-		Number: "singular",
+		POS: lexicon.NOUN,
+		//Type: "1",
+		nConfig: NounFlexyConfig{
+			Case: lexicon.GENITIVE,
+			Number: 1,
+		},
 	})
 	if err != nil {
 		t.Error(err)

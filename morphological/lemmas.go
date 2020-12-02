@@ -1,14 +1,13 @@
 package morphological
 
 import (
-	"fmt"
 	"github.com/eakarpov/msaot/lexicon"
 )
 
 type NCase struct {
-	Case   string
-	Number string
-	Person string
+	Case   lexicon.Case
+	Number int
+	Person *int
 }
 
 type VCase struct {
@@ -20,7 +19,7 @@ type VCase struct {
 type Lemma struct {
 	Normal string
 	Value  string
-	Post   string
+	Pos   string
 	nCase  *NCase
 	vCase  *VCase
 }
@@ -32,10 +31,14 @@ type GrammarConfig struct {
 }
 
 type FlexyConfig struct {
-	POS string
+	POS lexicon.POS
 	Type string
-	Case string
-	Number string
+	nConfig NounFlexyConfig
+}
+
+type NounFlexyConfig struct {
+	Case lexicon.Case
+	Number int
 	Person string
 }
 
@@ -44,12 +47,46 @@ func Build(normal string, config GrammarConfig) *Lemma {
 }
 
 func Normalize(word string, config FlexyConfig) (*Lemma, error) {
+	switch config.POS {
+	case lexicon.NOUN:
+		return NormalizeNoun(word, config.nConfig)
+	default:
+		return nil, nil
+	}
+}
+
+func NormalizeNoun(word string, config NounFlexyConfig) (*Lemma, error) {
 	flexies, err := lexicon.GetFlexForm(word)
 	if err != nil {
 		return nil, err
 	}
+	var lemma *Lemma
 	for _, form := range flexies {
-		fmt.Println(form)
+		if form.R.GPositionGrammarPosition != nil {
+			position := form.R.GPositionGrammarPosition
+			gCase := position.GCase
+			gNumber := position.GNumber
+			if gNumber.Valid &&
+				gCase.Valid &&
+				lexicon.Case(gCase.Int64) == config.Case &&
+				int(gNumber.Int64) == config.Number {
+				var person *int
+				if position.GPerson.Valid {
+					value := int(position.GPerson.Int64)
+					person = &value
+				}
+				lemma = &Lemma{
+					Normal: form.Normal,
+					Value:  form.Value,
+					Pos:    form.Pos,
+					nCase:  &NCase{
+						Case:   lexicon.Case(gCase.Int64),
+						Number: int(gNumber.Int64),
+						Person: person,
+					},
+				}
+			}
+		}
 	}
-	return nil, nil
+	return lemma, nil
 }
