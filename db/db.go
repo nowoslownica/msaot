@@ -6,7 +6,7 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
-type closeFunc func() error
+type CloseFunc func() error
 
 type sqliteDB struct {
 	db  *sql.DB

@@ -2,11 +2,12 @@ package dblib
 
 import (
 	"context"
+	"github.com/eakarpov/msaot/db"
 	"github.com/eakarpov/msaot/db/sqlite/models"
 )
 
 type DB interface {
-	Flexies() *Flexies
+	Flexies() *db.Flexies
 }
 
 type Flexies interface {
