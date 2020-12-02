@@ -6,6 +6,8 @@ import (
 	"github.com/eakarpov/msaot/db/sqlite/models"
 )
 
+var Database DB
+
 type DB interface {
 	Flexies() *db.Flexies
 }

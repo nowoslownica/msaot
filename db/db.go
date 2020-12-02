@@ -2,7 +2,7 @@ package db
 
 import (
 	"database/sql"
-	migrations "github.com/eakarpov/msaot/db/sqlite/migrations"
+	"github.com/eakarpov/msaot/db/sqlite/migrations"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
