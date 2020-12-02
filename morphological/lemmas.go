@@ -48,6 +48,8 @@ func Normalize(word string, config FlexyConfig) (*Lemma, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(flexies)
+	for _, form := range flexies {
+		fmt.Println(form)
+	}
 	return nil, nil
 }

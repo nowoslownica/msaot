@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/eakarpov/msaot/db/sqlite/migrations"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	"path/filepath"
 )
 
 type CloseFunc func() error
@@ -16,7 +17,7 @@ type sqliteDB struct {
 func New() *sqliteDB {
 	db := &sqliteDB{
 		db:  nil,
-		name: "test-db",
+		name: filepath.Join("../test-db.db"),
 	}
 	return db
 }
@@ -31,7 +32,7 @@ func (c *sqliteDB) Init() error {
 	if err != nil {
 		return err
 	}
-	err = InitDB()
+	err = c.InitDB()
 	if err != nil {
 		return err
 	}
@@ -43,6 +44,6 @@ func (c *sqliteDB) Close() error {
 	return c.db.Close()
 }
 
-func InitDB() error {
-	return migrations.MigrateSchema("test-db.db")
+func (c *sqliteDB) InitDB() error {
+	return migrations.MigrateSchema(c.name)
 }

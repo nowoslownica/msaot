@@ -1,7 +1,10 @@
-output   = "../models"
+output   = "models"
 wipe = true
 no-hooks = true
 
 [sqlite3]
-dbname = "../test-db.db"
+dbname = "../../test-db.db"
 blacklist = ["schema_migrations"]
+
+[aliases.tables.flexies.columns]
+gPosition = "GPositionValue"
