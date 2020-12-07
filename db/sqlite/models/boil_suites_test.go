@@ -14,51 +14,61 @@ import "testing"
 func TestParent(t *testing.T) {
 	t.Run("Flexies", testFlexies)
 	t.Run("GrammarPositions", testGrammarPositions)
+	t.Run("Lemmas", testLemmas)
 }
 
 func TestDelete(t *testing.T) {
 	t.Run("Flexies", testFlexiesDelete)
 	t.Run("GrammarPositions", testGrammarPositionsDelete)
+	t.Run("Lemmas", testLemmasDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
 	t.Run("Flexies", testFlexiesQueryDeleteAll)
 	t.Run("GrammarPositions", testGrammarPositionsQueryDeleteAll)
+	t.Run("Lemmas", testLemmasQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
 	t.Run("Flexies", testFlexiesSliceDeleteAll)
 	t.Run("GrammarPositions", testGrammarPositionsSliceDeleteAll)
+	t.Run("Lemmas", testLemmasSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
 	t.Run("Flexies", testFlexiesExists)
 	t.Run("GrammarPositions", testGrammarPositionsExists)
+	t.Run("Lemmas", testLemmasExists)
 }
 
 func TestFind(t *testing.T) {
 	t.Run("Flexies", testFlexiesFind)
 	t.Run("GrammarPositions", testGrammarPositionsFind)
+	t.Run("Lemmas", testLemmasFind)
 }
 
 func TestBind(t *testing.T) {
 	t.Run("Flexies", testFlexiesBind)
 	t.Run("GrammarPositions", testGrammarPositionsBind)
+	t.Run("Lemmas", testLemmasBind)
 }
 
 func TestOne(t *testing.T) {
 	t.Run("Flexies", testFlexiesOne)
 	t.Run("GrammarPositions", testGrammarPositionsOne)
+	t.Run("Lemmas", testLemmasOne)
 }
 
 func TestAll(t *testing.T) {
 	t.Run("Flexies", testFlexiesAll)
 	t.Run("GrammarPositions", testGrammarPositionsAll)
+	t.Run("Lemmas", testLemmasAll)
 }
 
 func TestCount(t *testing.T) {
 	t.Run("Flexies", testFlexiesCount)
 	t.Run("GrammarPositions", testGrammarPositionsCount)
+	t.Run("Lemmas", testLemmasCount)
 }
 
 func TestInsert(t *testing.T) {
@@ -66,12 +76,15 @@ func TestInsert(t *testing.T) {
 	t.Run("Flexies", testFlexiesInsertWhitelist)
 	t.Run("GrammarPositions", testGrammarPositionsInsert)
 	t.Run("GrammarPositions", testGrammarPositionsInsertWhitelist)
+	t.Run("Lemmas", testLemmasInsert)
+	t.Run("Lemmas", testLemmasInsertWhitelist)
 }
 
 // TestToOne tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToOne(t *testing.T) {
-	t.Run("FlexyToGrammarPositionUsingGPositionGrammarPosition", testFlexyToOneGrammarPositionUsingGPositionGrammarPosition)
+	t.Run("FlexyToGrammarPositionUsingGPositionIdGrammarPosition", testFlexyToOneGrammarPositionUsingGPositionIdGrammarPosition)
+	t.Run("FlexyToLemmaUsingLemmaIdLemmas", testFlexyToOneLemmaUsingLemmaIdLemmas)
 }
 
 // TestOneToOne tests cannot be run in parallel
@@ -81,19 +94,22 @@ func TestOneToOne(t *testing.T) {}
 // TestToMany tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToMany(t *testing.T) {
-	t.Run("GrammarPositionToGPositionFlexies", testGrammarPositionToManyGPositionFlexies)
+	t.Run("GrammarPositionToGPositionIdFlexies", testGrammarPositionToManyGPositionIdFlexies)
+	t.Run("LemmaToLemmaIdFlexies", testLemmaToManyLemmaIdFlexies)
 }
 
 // TestToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToOneSet(t *testing.T) {
-	t.Run("FlexyToGrammarPositionUsingGPositionFlexies", testFlexyToOneSetOpGrammarPositionUsingGPositionGrammarPosition)
+	t.Run("FlexyToGrammarPositionUsingGPositionIdFlexies", testFlexyToOneSetOpGrammarPositionUsingGPositionIdGrammarPosition)
+	t.Run("FlexyToLemmaUsingLemmaIdFlexies", testFlexyToOneSetOpLemmaUsingLemmaIdLemmas)
 }
 
 // TestToOneRemove tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToOneRemove(t *testing.T) {
-	t.Run("FlexyToGrammarPositionUsingGPositionFlexies", testFlexyToOneRemoveOpGrammarPositionUsingGPositionGrammarPosition)
+	t.Run("FlexyToGrammarPositionUsingGPositionIdFlexies", testFlexyToOneRemoveOpGrammarPositionUsingGPositionIdGrammarPosition)
+	t.Run("FlexyToLemmaUsingLemmaIdFlexies", testFlexyToOneRemoveOpLemmaUsingLemmaIdLemmas)
 }
 
 // TestOneToOneSet tests cannot be run in parallel
@@ -107,42 +123,50 @@ func TestOneToOneRemove(t *testing.T) {}
 // TestToManyAdd tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToManyAdd(t *testing.T) {
-	t.Run("GrammarPositionToGPositionFlexies", testGrammarPositionToManyAddOpGPositionFlexies)
+	t.Run("GrammarPositionToGPositionIdFlexies", testGrammarPositionToManyAddOpGPositionIdFlexies)
+	t.Run("LemmaToLemmaIdFlexies", testLemmaToManyAddOpLemmaIdFlexies)
 }
 
 // TestToManySet tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToManySet(t *testing.T) {
-	t.Run("GrammarPositionToGPositionFlexies", testGrammarPositionToManySetOpGPositionFlexies)
+	t.Run("GrammarPositionToGPositionIdFlexies", testGrammarPositionToManySetOpGPositionIdFlexies)
+	t.Run("LemmaToLemmaIdFlexies", testLemmaToManySetOpLemmaIdFlexies)
 }
 
 // TestToManyRemove tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToManyRemove(t *testing.T) {
-	t.Run("GrammarPositionToGPositionFlexies", testGrammarPositionToManyRemoveOpGPositionFlexies)
+	t.Run("GrammarPositionToGPositionIdFlexies", testGrammarPositionToManyRemoveOpGPositionIdFlexies)
+	t.Run("LemmaToLemmaIdFlexies", testLemmaToManyRemoveOpLemmaIdFlexies)
 }
 
 func TestReload(t *testing.T) {
 	t.Run("Flexies", testFlexiesReload)
 	t.Run("GrammarPositions", testGrammarPositionsReload)
+	t.Run("Lemmas", testLemmasReload)
 }
 
 func TestReloadAll(t *testing.T) {
 	t.Run("Flexies", testFlexiesReloadAll)
 	t.Run("GrammarPositions", testGrammarPositionsReloadAll)
+	t.Run("Lemmas", testLemmasReloadAll)
 }
 
 func TestSelect(t *testing.T) {
 	t.Run("Flexies", testFlexiesSelect)
 	t.Run("GrammarPositions", testGrammarPositionsSelect)
+	t.Run("Lemmas", testLemmasSelect)
 }
 
 func TestUpdate(t *testing.T) {
 	t.Run("Flexies", testFlexiesUpdate)
 	t.Run("GrammarPositions", testGrammarPositionsUpdate)
+	t.Run("Lemmas", testLemmasUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
 	t.Run("Flexies", testFlexiesSliceUpdateAll)
 	t.Run("GrammarPositions", testGrammarPositionsSliceUpdateAll)
+	t.Run("Lemmas", testLemmasSliceUpdateAll)
 }

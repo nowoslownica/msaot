@@ -353,7 +353,7 @@ func testFlexiesInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testFlexyToOneGrammarPositionUsingGPositionGrammarPosition(t *testing.T) {
+func testFlexyToOneGrammarPositionUsingGPositionIdGrammarPosition(t *testing.T) {
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
@@ -373,12 +373,12 @@ func testFlexyToOneGrammarPositionUsingGPositionGrammarPosition(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	queries.Assign(&local.GPosition, foreign.ID)
+	queries.Assign(&local.GPositionId, foreign.ID)
 	if err := local.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	check, err := local.GPositionGrammarPosition().One(ctx, tx)
+	check, err := local.GPositionIdGrammarPosition().One(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -388,23 +388,74 @@ func testFlexyToOneGrammarPositionUsingGPositionGrammarPosition(t *testing.T) {
 	}
 
 	slice := FlexySlice{&local}
-	if err = local.L.LoadGPositionGrammarPosition(ctx, tx, false, (*[]*Flexy)(&slice), nil); err != nil {
+	if err = local.L.LoadGPositionIdGrammarPosition(ctx, tx, false, (*[]*Flexy)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
-	if local.R.GPositionGrammarPosition == nil {
+	if local.R.GPositionIdGrammarPosition == nil {
 		t.Error("struct should have been eager loaded")
 	}
 
-	local.R.GPositionGrammarPosition = nil
-	if err = local.L.LoadGPositionGrammarPosition(ctx, tx, true, &local, nil); err != nil {
+	local.R.GPositionIdGrammarPosition = nil
+	if err = local.L.LoadGPositionIdGrammarPosition(ctx, tx, true, &local, nil); err != nil {
 		t.Fatal(err)
 	}
-	if local.R.GPositionGrammarPosition == nil {
+	if local.R.GPositionIdGrammarPosition == nil {
 		t.Error("struct should have been eager loaded")
 	}
 }
 
-func testFlexyToOneSetOpGrammarPositionUsingGPositionGrammarPosition(t *testing.T) {
+func testFlexyToOneLemmaUsingLemmaIdLemmas(t *testing.T) {
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var local Flexy
+	var foreign Lemma
+
+	seed := randomize.NewSeed()
+	if err := randomize.Struct(seed, &local, flexyDBTypes, true, flexyColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Flexy struct: %s", err)
+	}
+	if err := randomize.Struct(seed, &foreign, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
+	}
+
+	if err := foreign.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	queries.Assign(&local.LemmaId, foreign.ID)
+	if err := local.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	check, err := local.LemmaIdLemmas().One(ctx, tx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !queries.Equal(check.ID, foreign.ID) {
+		t.Errorf("want: %v, got %v", foreign.ID, check.ID)
+	}
+
+	slice := FlexySlice{&local}
+	if err = local.L.LoadLemmaIdLemmas(ctx, tx, false, (*[]*Flexy)(&slice), nil); err != nil {
+		t.Fatal(err)
+	}
+	if local.R.LemmaIdLemmas == nil {
+		t.Error("struct should have been eager loaded")
+	}
+
+	local.R.LemmaIdLemmas = nil
+	if err = local.L.LoadLemmaIdLemmas(ctx, tx, true, &local, nil); err != nil {
+		t.Fatal(err)
+	}
+	if local.R.LemmaIdLemmas == nil {
+		t.Error("struct should have been eager loaded")
+	}
+}
+
+func testFlexyToOneSetOpGrammarPositionUsingGPositionIdGrammarPosition(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -433,36 +484,36 @@ func testFlexyToOneSetOpGrammarPositionUsingGPositionGrammarPosition(t *testing.
 	}
 
 	for i, x := range []*GrammarPosition{&b, &c} {
-		err = a.SetGPositionGrammarPosition(ctx, tx, i != 0, x)
+		err = a.SetGPositionIdGrammarPosition(ctx, tx, i != 0, x)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		if a.R.GPositionGrammarPosition != x {
+		if a.R.GPositionIdGrammarPosition != x {
 			t.Error("relationship struct not set to correct value")
 		}
 
-		if x.R.GPositionFlexies[0] != &a {
+		if x.R.GPositionIdFlexies[0] != &a {
 			t.Error("failed to append to foreign relationship struct")
 		}
-		if !queries.Equal(a.GPosition, x.ID) {
-			t.Error("foreign key was wrong value", a.GPosition)
+		if !queries.Equal(a.GPositionId, x.ID) {
+			t.Error("foreign key was wrong value", a.GPositionId)
 		}
 
-		zero := reflect.Zero(reflect.TypeOf(a.GPosition))
-		reflect.Indirect(reflect.ValueOf(&a.GPosition)).Set(zero)
+		zero := reflect.Zero(reflect.TypeOf(a.GPositionId))
+		reflect.Indirect(reflect.ValueOf(&a.GPositionId)).Set(zero)
 
 		if err = a.Reload(ctx, tx); err != nil {
 			t.Fatal("failed to reload", err)
 		}
 
-		if !queries.Equal(a.GPosition, x.ID) {
-			t.Error("foreign key was wrong value", a.GPosition, x.ID)
+		if !queries.Equal(a.GPositionId, x.ID) {
+			t.Error("foreign key was wrong value", a.GPositionId, x.ID)
 		}
 	}
 }
 
-func testFlexyToOneRemoveOpGrammarPositionUsingGPositionGrammarPosition(t *testing.T) {
+func testFlexyToOneRemoveOpGrammarPositionUsingGPositionIdGrammarPosition(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -484,15 +535,15 @@ func testFlexyToOneRemoveOpGrammarPositionUsingGPositionGrammarPosition(t *testi
 		t.Fatal(err)
 	}
 
-	if err = a.SetGPositionGrammarPosition(ctx, tx, true, &b); err != nil {
+	if err = a.SetGPositionIdGrammarPosition(ctx, tx, true, &b); err != nil {
 		t.Fatal(err)
 	}
 
-	if err = a.RemoveGPositionGrammarPosition(ctx, tx, &b); err != nil {
+	if err = a.RemoveGPositionIdGrammarPosition(ctx, tx, &b); err != nil {
 		t.Error("failed to remove relationship")
 	}
 
-	count, err := a.GPositionGrammarPosition().Count(ctx, tx)
+	count, err := a.GPositionIdGrammarPosition().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -500,15 +551,124 @@ func testFlexyToOneRemoveOpGrammarPositionUsingGPositionGrammarPosition(t *testi
 		t.Error("want no relationships remaining")
 	}
 
-	if a.R.GPositionGrammarPosition != nil {
+	if a.R.GPositionIdGrammarPosition != nil {
 		t.Error("R struct entry should be nil")
 	}
 
-	if !queries.IsValuerNil(a.GPosition) {
+	if !queries.IsValuerNil(a.GPositionId) {
 		t.Error("foreign key value should be nil")
 	}
 
-	if len(b.R.GPositionFlexies) != 0 {
+	if len(b.R.GPositionIdFlexies) != 0 {
+		t.Error("failed to remove a from b's relationships")
+	}
+}
+
+func testFlexyToOneSetOpLemmaUsingLemmaIdLemmas(t *testing.T) {
+	var err error
+
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var a Flexy
+	var b, c Lemma
+
+	seed := randomize.NewSeed()
+	if err = randomize.Struct(seed, &a, flexyDBTypes, false, strmangle.SetComplement(flexyPrimaryKeyColumns, flexyColumnsWithoutDefault)...); err != nil {
+		t.Fatal(err)
+	}
+	if err = randomize.Struct(seed, &b, lemmaDBTypes, false, strmangle.SetComplement(lemmaPrimaryKeyColumns, lemmaColumnsWithoutDefault)...); err != nil {
+		t.Fatal(err)
+	}
+	if err = randomize.Struct(seed, &c, lemmaDBTypes, false, strmangle.SetComplement(lemmaPrimaryKeyColumns, lemmaColumnsWithoutDefault)...); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	for i, x := range []*Lemma{&b, &c} {
+		err = a.SetLemmaIdLemmas(ctx, tx, i != 0, x)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if a.R.LemmaIdLemmas != x {
+			t.Error("relationship struct not set to correct value")
+		}
+
+		if x.R.LemmaIdFlexies[0] != &a {
+			t.Error("failed to append to foreign relationship struct")
+		}
+		if !queries.Equal(a.LemmaId, x.ID) {
+			t.Error("foreign key was wrong value", a.LemmaId)
+		}
+
+		zero := reflect.Zero(reflect.TypeOf(a.LemmaId))
+		reflect.Indirect(reflect.ValueOf(&a.LemmaId)).Set(zero)
+
+		if err = a.Reload(ctx, tx); err != nil {
+			t.Fatal("failed to reload", err)
+		}
+
+		if !queries.Equal(a.LemmaId, x.ID) {
+			t.Error("foreign key was wrong value", a.LemmaId, x.ID)
+		}
+	}
+}
+
+func testFlexyToOneRemoveOpLemmaUsingLemmaIdLemmas(t *testing.T) {
+	var err error
+
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var a Flexy
+	var b Lemma
+
+	seed := randomize.NewSeed()
+	if err = randomize.Struct(seed, &a, flexyDBTypes, false, strmangle.SetComplement(flexyPrimaryKeyColumns, flexyColumnsWithoutDefault)...); err != nil {
+		t.Fatal(err)
+	}
+	if err = randomize.Struct(seed, &b, lemmaDBTypes, false, strmangle.SetComplement(lemmaPrimaryKeyColumns, lemmaColumnsWithoutDefault)...); err != nil {
+		t.Fatal(err)
+	}
+
+	if err = a.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	if err = a.SetLemmaIdLemmas(ctx, tx, true, &b); err != nil {
+		t.Fatal(err)
+	}
+
+	if err = a.RemoveLemmaIdLemmas(ctx, tx, &b); err != nil {
+		t.Error("failed to remove relationship")
+	}
+
+	count, err := a.LemmaIdLemmas().Count(ctx, tx)
+	if err != nil {
+		t.Error(err)
+	}
+	if count != 0 {
+		t.Error("want no relationships remaining")
+	}
+
+	if a.R.LemmaIdLemmas != nil {
+		t.Error("R struct entry should be nil")
+	}
+
+	if !queries.IsValuerNil(a.LemmaId) {
+		t.Error("foreign key value should be nil")
+	}
+
+	if len(b.R.LemmaIdFlexies) != 0 {
 		t.Error("failed to remove a from b's relationships")
 	}
 }
@@ -587,7 +747,7 @@ func testFlexiesSelect(t *testing.T) {
 }
 
 var (
-	flexyDBTypes = map[string]string{`ID`: `INT`, `Value`: `TEXT`, `Normal`: `TEXT`, `Pos`: `TEXT`, `GPosition`: `INT`}
+	flexyDBTypes = map[string]string{`ID`: `INT`, `Value`: `TEXT`, `LemmaId`: `INT`, `GPositionId`: `INT`}
 	_            = bytes.MinRead
 )
 

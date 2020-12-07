@@ -21,24 +21,24 @@ var (
 	_ = queries.Equal
 )
 
-func testGrammarPositions(t *testing.T) {
+func testLemmas(t *testing.T) {
 	t.Parallel()
 
-	query := GrammarPositions()
+	query := Lemmas()
 
 	if query.Query == nil {
 		t.Error("expected a query, got nothing")
 	}
 }
 
-func testGrammarPositionsDelete(t *testing.T) {
+func testLemmasDelete(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -54,7 +54,7 @@ func testGrammarPositionsDelete(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := GrammarPositions().Count(ctx, tx)
+	count, err := Lemmas().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,14 +64,14 @@ func testGrammarPositionsDelete(t *testing.T) {
 	}
 }
 
-func testGrammarPositionsQueryDeleteAll(t *testing.T) {
+func testLemmasQueryDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -81,13 +81,13 @@ func testGrammarPositionsQueryDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	if rowsAff, err := GrammarPositions().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := Lemmas().DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := GrammarPositions().Count(ctx, tx)
+	count, err := Lemmas().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -97,14 +97,14 @@ func testGrammarPositionsQueryDeleteAll(t *testing.T) {
 	}
 }
 
-func testGrammarPositionsSliceDeleteAll(t *testing.T) {
+func testLemmasSliceDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func testGrammarPositionsSliceDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := GrammarPositionSlice{o}
+	slice := LemmaSlice{o}
 
 	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
@@ -122,7 +122,7 @@ func testGrammarPositionsSliceDeleteAll(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := GrammarPositions().Count(ctx, tx)
+	count, err := Lemmas().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,14 +132,14 @@ func testGrammarPositionsSliceDeleteAll(t *testing.T) {
 	}
 }
 
-func testGrammarPositionsExists(t *testing.T) {
+func testLemmasExists(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -149,23 +149,23 @@ func testGrammarPositionsExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	e, err := GrammarPositionExists(ctx, tx, o.ID)
+	e, err := LemmaExists(ctx, tx, o.ID)
 	if err != nil {
-		t.Errorf("Unable to check if GrammarPosition exists: %s", err)
+		t.Errorf("Unable to check if Lemma exists: %s", err)
 	}
 	if !e {
-		t.Errorf("Expected GrammarPositionExists to return true, but got false.")
+		t.Errorf("Expected LemmaExists to return true, but got false.")
 	}
 }
 
-func testGrammarPositionsFind(t *testing.T) {
+func testLemmasFind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -175,24 +175,24 @@ func testGrammarPositionsFind(t *testing.T) {
 		t.Error(err)
 	}
 
-	grammarPositionFound, err := FindGrammarPosition(ctx, tx, o.ID)
+	lemmaFound, err := FindLemma(ctx, tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if grammarPositionFound == nil {
+	if lemmaFound == nil {
 		t.Error("want a record, got nil")
 	}
 }
 
-func testGrammarPositionsBind(t *testing.T) {
+func testLemmasBind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -202,19 +202,19 @@ func testGrammarPositionsBind(t *testing.T) {
 		t.Error(err)
 	}
 
-	if err = GrammarPositions().Bind(ctx, tx, o); err != nil {
+	if err = Lemmas().Bind(ctx, tx, o); err != nil {
 		t.Error(err)
 	}
 }
 
-func testGrammarPositionsOne(t *testing.T) {
+func testLemmasOne(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -224,38 +224,38 @@ func testGrammarPositionsOne(t *testing.T) {
 		t.Error(err)
 	}
 
-	if x, err := GrammarPositions().One(ctx, tx); err != nil {
+	if x, err := Lemmas().One(ctx, tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
 	}
 }
 
-func testGrammarPositionsAll(t *testing.T) {
+func testLemmasAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	grammarPositionOne := &GrammarPosition{}
-	grammarPositionTwo := &GrammarPosition{}
-	if err = randomize.Struct(seed, grammarPositionOne, grammarPositionDBTypes, false, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	lemmaOne := &Lemma{}
+	lemmaTwo := &Lemma{}
+	if err = randomize.Struct(seed, lemmaOne, lemmaDBTypes, false, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
-	if err = randomize.Struct(seed, grammarPositionTwo, grammarPositionDBTypes, false, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	if err = randomize.Struct(seed, lemmaTwo, lemmaDBTypes, false, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = grammarPositionOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = lemmaOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = grammarPositionTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = lemmaTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := GrammarPositions().All(ctx, tx)
+	slice, err := Lemmas().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -265,31 +265,31 @@ func testGrammarPositionsAll(t *testing.T) {
 	}
 }
 
-func testGrammarPositionsCount(t *testing.T) {
+func testLemmasCount(t *testing.T) {
 	t.Parallel()
 
 	var err error
 	seed := randomize.NewSeed()
-	grammarPositionOne := &GrammarPosition{}
-	grammarPositionTwo := &GrammarPosition{}
-	if err = randomize.Struct(seed, grammarPositionOne, grammarPositionDBTypes, false, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	lemmaOne := &Lemma{}
+	lemmaTwo := &Lemma{}
+	if err = randomize.Struct(seed, lemmaOne, lemmaDBTypes, false, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
-	if err = randomize.Struct(seed, grammarPositionTwo, grammarPositionDBTypes, false, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	if err = randomize.Struct(seed, lemmaTwo, lemmaDBTypes, false, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = grammarPositionOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = lemmaOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = grammarPositionTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = lemmaTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := GrammarPositions().Count(ctx, tx)
+	count, err := Lemmas().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,14 +299,14 @@ func testGrammarPositionsCount(t *testing.T) {
 	}
 }
 
-func testGrammarPositionsInsert(t *testing.T) {
+func testLemmasInsert(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -316,7 +316,7 @@ func testGrammarPositionsInsert(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := GrammarPositions().Count(ctx, tx)
+	count, err := Lemmas().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -326,24 +326,24 @@ func testGrammarPositionsInsert(t *testing.T) {
 	}
 }
 
-func testGrammarPositionsInsertWhitelist(t *testing.T) {
+func testLemmasInsertWhitelist(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(grammarPositionColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(ctx, tx, boil.Whitelist(lemmaColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := GrammarPositions().Count(ctx, tx)
+	count, err := Lemmas().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -353,18 +353,18 @@ func testGrammarPositionsInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testGrammarPositionToManyGPositionIdFlexies(t *testing.T) {
+func testLemmaToManyLemmaIdFlexies(t *testing.T) {
 	var err error
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a GrammarPosition
+	var a Lemma
 	var b, c Flexy
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	if err = randomize.Struct(seed, &a, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
@@ -378,8 +378,8 @@ func testGrammarPositionToManyGPositionIdFlexies(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	queries.Assign(&b.GPositionId, a.ID)
-	queries.Assign(&c.GPositionId, a.ID)
+	queries.Assign(&b.LemmaId, a.ID)
+	queries.Assign(&c.LemmaId, a.ID)
 	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
@@ -387,17 +387,17 @@ func testGrammarPositionToManyGPositionIdFlexies(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	check, err := a.GPositionIdFlexies().All(ctx, tx)
+	check, err := a.LemmaIdFlexies().All(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	bFound, cFound := false, false
 	for _, v := range check {
-		if queries.Equal(v.GPositionId, b.GPositionId) {
+		if queries.Equal(v.LemmaId, b.LemmaId) {
 			bFound = true
 		}
-		if queries.Equal(v.GPositionId, c.GPositionId) {
+		if queries.Equal(v.LemmaId, c.LemmaId) {
 			cFound = true
 		}
 	}
@@ -409,19 +409,19 @@ func testGrammarPositionToManyGPositionIdFlexies(t *testing.T) {
 		t.Error("expected to find c")
 	}
 
-	slice := GrammarPositionSlice{&a}
-	if err = a.L.LoadGPositionIdFlexies(ctx, tx, false, (*[]*GrammarPosition)(&slice), nil); err != nil {
+	slice := LemmaSlice{&a}
+	if err = a.L.LoadLemmaIdFlexies(ctx, tx, false, (*[]*Lemma)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.GPositionIdFlexies); got != 2 {
+	if got := len(a.R.LemmaIdFlexies); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
-	a.R.GPositionIdFlexies = nil
-	if err = a.L.LoadGPositionIdFlexies(ctx, tx, true, &a, nil); err != nil {
+	a.R.LemmaIdFlexies = nil
+	if err = a.L.LoadLemmaIdFlexies(ctx, tx, true, &a, nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.GPositionIdFlexies); got != 2 {
+	if got := len(a.R.LemmaIdFlexies); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
@@ -430,18 +430,18 @@ func testGrammarPositionToManyGPositionIdFlexies(t *testing.T) {
 	}
 }
 
-func testGrammarPositionToManyAddOpGPositionIdFlexies(t *testing.T) {
+func testLemmaToManyAddOpLemmaIdFlexies(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a GrammarPosition
+	var a Lemma
 	var b, c, d, e Flexy
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, grammarPositionDBTypes, false, strmangle.SetComplement(grammarPositionPrimaryKeyColumns, grammarPositionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, lemmaDBTypes, false, strmangle.SetComplement(lemmaPrimaryKeyColumns, lemmaColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	foreigners := []*Flexy{&b, &c, &d, &e}
@@ -467,7 +467,7 @@ func testGrammarPositionToManyAddOpGPositionIdFlexies(t *testing.T) {
 	}
 
 	for i, x := range foreignersSplitByInsertion {
-		err = a.AddGPositionIdFlexies(ctx, tx, i != 0, x...)
+		err = a.AddLemmaIdFlexies(ctx, tx, i != 0, x...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -475,28 +475,28 @@ func testGrammarPositionToManyAddOpGPositionIdFlexies(t *testing.T) {
 		first := x[0]
 		second := x[1]
 
-		if !queries.Equal(a.ID, first.GPositionId) {
-			t.Error("foreign key was wrong value", a.ID, first.GPositionId)
+		if !queries.Equal(a.ID, first.LemmaId) {
+			t.Error("foreign key was wrong value", a.ID, first.LemmaId)
 		}
-		if !queries.Equal(a.ID, second.GPositionId) {
-			t.Error("foreign key was wrong value", a.ID, second.GPositionId)
+		if !queries.Equal(a.ID, second.LemmaId) {
+			t.Error("foreign key was wrong value", a.ID, second.LemmaId)
 		}
 
-		if first.R.GPositionIdGrammarPosition != &a {
+		if first.R.LemmaIdLemmas != &a {
 			t.Error("relationship was not added properly to the foreign slice")
 		}
-		if second.R.GPositionIdGrammarPosition != &a {
+		if second.R.LemmaIdLemmas != &a {
 			t.Error("relationship was not added properly to the foreign slice")
 		}
 
-		if a.R.GPositionIdFlexies[i*2] != first {
+		if a.R.LemmaIdFlexies[i*2] != first {
 			t.Error("relationship struct slice not set to correct value")
 		}
-		if a.R.GPositionIdFlexies[i*2+1] != second {
+		if a.R.LemmaIdFlexies[i*2+1] != second {
 			t.Error("relationship struct slice not set to correct value")
 		}
 
-		count, err := a.GPositionIdFlexies().Count(ctx, tx)
+		count, err := a.LemmaIdFlexies().Count(ctx, tx)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -506,18 +506,18 @@ func testGrammarPositionToManyAddOpGPositionIdFlexies(t *testing.T) {
 	}
 }
 
-func testGrammarPositionToManySetOpGPositionIdFlexies(t *testing.T) {
+func testLemmaToManySetOpLemmaIdFlexies(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a GrammarPosition
+	var a Lemma
 	var b, c, d, e Flexy
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, grammarPositionDBTypes, false, strmangle.SetComplement(grammarPositionPrimaryKeyColumns, grammarPositionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, lemmaDBTypes, false, strmangle.SetComplement(lemmaPrimaryKeyColumns, lemmaColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	foreigners := []*Flexy{&b, &c, &d, &e}
@@ -537,25 +537,12 @@ func testGrammarPositionToManySetOpGPositionIdFlexies(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = a.SetGPositionIdFlexies(ctx, tx, false, &b, &c)
+	err = a.SetLemmaIdFlexies(ctx, tx, false, &b, &c)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	count, err := a.GPositionIdFlexies().Count(ctx, tx)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if count != 2 {
-		t.Error("count was wrong:", count)
-	}
-
-	err = a.SetGPositionIdFlexies(ctx, tx, true, &d, &e)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	count, err = a.GPositionIdFlexies().Count(ctx, tx)
+	count, err := a.LemmaIdFlexies().Count(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -563,52 +550,65 @@ func testGrammarPositionToManySetOpGPositionIdFlexies(t *testing.T) {
 		t.Error("count was wrong:", count)
 	}
 
-	if !queries.IsValuerNil(b.GPositionId) {
+	err = a.SetLemmaIdFlexies(ctx, tx, true, &d, &e)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	count, err = a.LemmaIdFlexies().Count(ctx, tx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if count != 2 {
+		t.Error("count was wrong:", count)
+	}
+
+	if !queries.IsValuerNil(b.LemmaId) {
 		t.Error("want b's foreign key value to be nil")
 	}
-	if !queries.IsValuerNil(c.GPositionId) {
+	if !queries.IsValuerNil(c.LemmaId) {
 		t.Error("want c's foreign key value to be nil")
 	}
-	if !queries.Equal(a.ID, d.GPositionId) {
-		t.Error("foreign key was wrong value", a.ID, d.GPositionId)
+	if !queries.Equal(a.ID, d.LemmaId) {
+		t.Error("foreign key was wrong value", a.ID, d.LemmaId)
 	}
-	if !queries.Equal(a.ID, e.GPositionId) {
-		t.Error("foreign key was wrong value", a.ID, e.GPositionId)
-	}
-
-	if b.R.GPositionIdGrammarPosition != nil {
-		t.Error("relationship was not removed properly from the foreign struct")
-	}
-	if c.R.GPositionIdGrammarPosition != nil {
-		t.Error("relationship was not removed properly from the foreign struct")
-	}
-	if d.R.GPositionIdGrammarPosition != &a {
-		t.Error("relationship was not added properly to the foreign struct")
-	}
-	if e.R.GPositionIdGrammarPosition != &a {
-		t.Error("relationship was not added properly to the foreign struct")
+	if !queries.Equal(a.ID, e.LemmaId) {
+		t.Error("foreign key was wrong value", a.ID, e.LemmaId)
 	}
 
-	if a.R.GPositionIdFlexies[0] != &d {
+	if b.R.LemmaIdLemmas != nil {
+		t.Error("relationship was not removed properly from the foreign struct")
+	}
+	if c.R.LemmaIdLemmas != nil {
+		t.Error("relationship was not removed properly from the foreign struct")
+	}
+	if d.R.LemmaIdLemmas != &a {
+		t.Error("relationship was not added properly to the foreign struct")
+	}
+	if e.R.LemmaIdLemmas != &a {
+		t.Error("relationship was not added properly to the foreign struct")
+	}
+
+	if a.R.LemmaIdFlexies[0] != &d {
 		t.Error("relationship struct slice not set to correct value")
 	}
-	if a.R.GPositionIdFlexies[1] != &e {
+	if a.R.LemmaIdFlexies[1] != &e {
 		t.Error("relationship struct slice not set to correct value")
 	}
 }
 
-func testGrammarPositionToManyRemoveOpGPositionIdFlexies(t *testing.T) {
+func testLemmaToManyRemoveOpLemmaIdFlexies(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a GrammarPosition
+	var a Lemma
 	var b, c, d, e Flexy
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, grammarPositionDBTypes, false, strmangle.SetComplement(grammarPositionPrimaryKeyColumns, grammarPositionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, lemmaDBTypes, false, strmangle.SetComplement(lemmaPrimaryKeyColumns, lemmaColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	foreigners := []*Flexy{&b, &c, &d, &e}
@@ -622,12 +622,12 @@ func testGrammarPositionToManyRemoveOpGPositionIdFlexies(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = a.AddGPositionIdFlexies(ctx, tx, true, foreigners...)
+	err = a.AddLemmaIdFlexies(ctx, tx, true, foreigners...)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	count, err := a.GPositionIdFlexies().Count(ctx, tx)
+	count, err := a.LemmaIdFlexies().Count(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -635,12 +635,12 @@ func testGrammarPositionToManyRemoveOpGPositionIdFlexies(t *testing.T) {
 		t.Error("count was wrong:", count)
 	}
 
-	err = a.RemoveGPositionIdFlexies(ctx, tx, foreigners[:2]...)
+	err = a.RemoveLemmaIdFlexies(ctx, tx, foreigners[:2]...)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	count, err = a.GPositionIdFlexies().Count(ctx, tx)
+	count, err = a.LemmaIdFlexies().Count(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -648,47 +648,47 @@ func testGrammarPositionToManyRemoveOpGPositionIdFlexies(t *testing.T) {
 		t.Error("count was wrong:", count)
 	}
 
-	if !queries.IsValuerNil(b.GPositionId) {
+	if !queries.IsValuerNil(b.LemmaId) {
 		t.Error("want b's foreign key value to be nil")
 	}
-	if !queries.IsValuerNil(c.GPositionId) {
+	if !queries.IsValuerNil(c.LemmaId) {
 		t.Error("want c's foreign key value to be nil")
 	}
 
-	if b.R.GPositionIdGrammarPosition != nil {
+	if b.R.LemmaIdLemmas != nil {
 		t.Error("relationship was not removed properly from the foreign struct")
 	}
-	if c.R.GPositionIdGrammarPosition != nil {
+	if c.R.LemmaIdLemmas != nil {
 		t.Error("relationship was not removed properly from the foreign struct")
 	}
-	if d.R.GPositionIdGrammarPosition != &a {
+	if d.R.LemmaIdLemmas != &a {
 		t.Error("relationship to a should have been preserved")
 	}
-	if e.R.GPositionIdGrammarPosition != &a {
+	if e.R.LemmaIdLemmas != &a {
 		t.Error("relationship to a should have been preserved")
 	}
 
-	if len(a.R.GPositionIdFlexies) != 2 {
+	if len(a.R.LemmaIdFlexies) != 2 {
 		t.Error("should have preserved two relationships")
 	}
 
 	// Removal doesn't do a stable deletion for performance so we have to flip the order
-	if a.R.GPositionIdFlexies[1] != &d {
+	if a.R.LemmaIdFlexies[1] != &d {
 		t.Error("relationship to d should have been preserved")
 	}
-	if a.R.GPositionIdFlexies[0] != &e {
+	if a.R.LemmaIdFlexies[0] != &e {
 		t.Error("relationship to e should have been preserved")
 	}
 }
 
-func testGrammarPositionsReload(t *testing.T) {
+func testLemmasReload(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -703,14 +703,14 @@ func testGrammarPositionsReload(t *testing.T) {
 	}
 }
 
-func testGrammarPositionsReloadAll(t *testing.T) {
+func testLemmasReloadAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -720,21 +720,21 @@ func testGrammarPositionsReloadAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := GrammarPositionSlice{o}
+	slice := LemmaSlice{o}
 
 	if err = slice.ReloadAll(ctx, tx); err != nil {
 		t.Error(err)
 	}
 }
 
-func testGrammarPositionsSelect(t *testing.T) {
+func testLemmasSelect(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -744,7 +744,7 @@ func testGrammarPositionsSelect(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice, err := GrammarPositions().All(ctx, tx)
+	slice, err := Lemmas().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -755,25 +755,25 @@ func testGrammarPositionsSelect(t *testing.T) {
 }
 
 var (
-	grammarPositionDBTypes = map[string]string{`ID`: `INT`, `GCase`: `INT`, `GPerson`: `INT`, `GNumber`: `INT`, `GTense`: `INT`, `GGender`: `INT`}
-	_                      = bytes.MinRead
+	lemmaDBTypes = map[string]string{`ID`: `INT`, `Value`: `TEXT`, `Pos`: `TEXT`, `ChangeSchema`: `INT`}
+	_            = bytes.MinRead
 )
 
-func testGrammarPositionsUpdate(t *testing.T) {
+func testLemmasUpdate(t *testing.T) {
 	t.Parallel()
 
-	if 0 == len(grammarPositionPrimaryKeyColumns) {
+	if 0 == len(lemmaPrimaryKeyColumns) {
 		t.Skip("Skipping table with no primary key columns")
 	}
-	if len(grammarPositionAllColumns) == len(grammarPositionPrimaryKeyColumns) {
+	if len(lemmaAllColumns) == len(lemmaPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -783,7 +783,7 @@ func testGrammarPositionsUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := GrammarPositions().Count(ctx, tx)
+	count, err := Lemmas().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -792,8 +792,8 @@ func testGrammarPositionsUpdate(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
@@ -803,18 +803,18 @@ func testGrammarPositionsUpdate(t *testing.T) {
 	}
 }
 
-func testGrammarPositionsSliceUpdateAll(t *testing.T) {
+func testLemmasSliceUpdateAll(t *testing.T) {
 	t.Parallel()
 
-	if len(grammarPositionAllColumns) == len(grammarPositionPrimaryKeyColumns) {
+	if len(lemmaAllColumns) == len(lemmaPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &GrammarPosition{}
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	o := &Lemma{}
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -824,7 +824,7 @@ func testGrammarPositionsSliceUpdateAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := GrammarPositions().Count(ctx, tx)
+	count, err := Lemmas().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -833,18 +833,18 @@ func testGrammarPositionsSliceUpdateAll(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, grammarPositionDBTypes, true, grammarPositionPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize GrammarPosition struct: %s", err)
+	if err = randomize.Struct(seed, o, lemmaDBTypes, true, lemmaPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize Lemma struct: %s", err)
 	}
 
 	// Remove Primary keys and unique columns from what we plan to update
 	var fields []string
-	if strmangle.StringSliceMatch(grammarPositionAllColumns, grammarPositionPrimaryKeyColumns) {
-		fields = grammarPositionAllColumns
+	if strmangle.StringSliceMatch(lemmaAllColumns, lemmaPrimaryKeyColumns) {
+		fields = lemmaAllColumns
 	} else {
 		fields = strmangle.SetComplement(
-			grammarPositionAllColumns,
-			grammarPositionPrimaryKeyColumns,
+			lemmaAllColumns,
+			lemmaPrimaryKeyColumns,
 		)
 	}
 
@@ -862,7 +862,7 @@ func testGrammarPositionsSliceUpdateAll(t *testing.T) {
 		}
 	}
 
-	slice := GrammarPositionSlice{o}
+	slice := LemmaSlice{o}
 	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {

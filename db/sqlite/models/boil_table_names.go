@@ -6,7 +6,9 @@ package models
 var TableNames = struct {
 	Flexies          string
 	GrammarPositions string
+	Lemmas           string
 }{
 	Flexies:          "flexies",
 	GrammarPositions: "grammar_positions",
+	Lemmas:           "lemmas",
 }

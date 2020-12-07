@@ -1,57 +1,62 @@
 create table grammar_positions (
   id int primary key,
-  gCase int,
-  gPerson int,
-  gNumber int,
-  gTense int,
-  gGender int,
-  declension int,
-  conjugation int
+  gCase int, -- 1: nom, 2: gen, 3: acc, 4: dat, 5: instr, 6: loc, 7: voc, 8: part, 9: prep
+  gPerson int, -- 1-2-3
+  gNumber int, -- 1-2-3
+  gTense int, -- 1-2: present, 3-6: past, 7-8: future
+  gGender int -- 1: f, 2: m, 3: n
+);
+
+create table lemmas (
+  id int primary key,
+  value text not null,
+  pos text not null,
+  changeSchema int -- 1-10: noun, 11-20: verb, 21-30: pronoun
 );
 
 create table flexies (
   id int primary key,
   value text not null,
-  normal text not null,
-  pos text not null,
-  gPosition int references grammar_positions (id) on delete restrict
+  lemmaId int references lemmas (id) on delete restrict,
+  gPositionId int references grammar_positions (id) on delete restrict
 );
 
--- declension 1A
-insert into grammar_positions values(1, 1, null, 1, null, 1, 1, null);
-insert into grammar_positions values(2, 2, null, 1, null, 1, 1, null);
-insert into grammar_positions values(3, 3, null, 1, null, 1, 1, null);
-insert into grammar_positions values(4, 4, null, 1, null, 1, 1, null);
-insert into grammar_positions values(5, 5, null, 1, null, 1, 1, null);
-insert into grammar_positions values(6, 6, null, 1, null, 1, 1, null);
-insert into grammar_positions values(7, 7, null, 1, null, 1, 1, null);
-insert into grammar_positions values(8, 1, null, 2, null, 1, 1, null);
-insert into grammar_positions values(9, 2, null, 2, null, 1, 1, null);
-insert into grammar_positions values(10, 3, null, 2, null, 1, 1, null);
-insert into grammar_positions values(11, 4, null, 2, null, 1, 1, null);
-insert into grammar_positions values(12, 5, null, 2, null, 1, 1, null);
-insert into grammar_positions values(13, 6, null, 2, null, 1, 1, null);
-insert into grammar_positions values(14, 7, null, 2, null, 1, 1, null);
+insert into grammar_positions values(0, null, null, null, null, null);
 
-insert into flexies values(1, 'мама', 'мама', 'n', 1);
-insert into flexies values(2, 'мамы', 'мама', 'n', 2);
-insert into flexies values(3, 'маму', 'мама', 'n', 3);
-insert into flexies values(4, 'маме', 'мама', 'n', 4);
-insert into flexies values(5, 'мамой', 'мама', 'n', 5);
-insert into flexies values(6, 'маме', 'мама', 'n', 6);
-insert into flexies values(7, 'мамо', 'мама', 'n', 7);
-insert into flexies values(8, 'мамы', 'мама', 'n', 8);
-insert into flexies values(9, 'мам', 'мама', 'n', 9);
-insert into flexies values(10, 'мам', 'мама', 'n', 10);
-insert into flexies values(11, 'мамам', 'мама', 'n', 11);
-insert into flexies values(12, 'мамами', 'мама', 'n', 12);
-insert into flexies values(13, 'мамах', 'мама', 'n', 13);
-insert into flexies values(14, 'мамы', 'мама', 'n', 14);
--- declension 1B
--- insert into grammar_positions values(15, 1, null, 1, null, 1, 1, null);
--- insert into grammar_positions values(16, 2, null, 1, null, 1, 1, null);
--- insert into grammar_positions values(17, 3, null, 1, null, 1, 1, null);
--- insert into grammar_positions values(18, 4, null, 1, null, 1, 1, null);
--- insert into grammar_positions values(19, 5, null, 1, null, 1, 1, null);
--- insert into grammar_positions values(20, 6, null, 1, null, 1, 1, null);
--- insert into grammar_positions values(21, 7, null, 1, null, 1, 1, null);
+-- declension noun/adjective
+insert into grammar_positions values(1, 1, null, 1, null, 1);
+insert into grammar_positions values(2, 2, null, 1, null, 1);
+insert into grammar_positions values(3, 3, null, 1, null, 1);
+insert into grammar_positions values(4, 4, null, 1, null, 1);
+insert into grammar_positions values(5, 5, null, 1, null, 1);
+insert into grammar_positions values(6, 6, null, 1, null, 1);
+insert into grammar_positions values(7, 7, null, 1, null, 1);
+insert into grammar_positions values(8, 1, null, 3, null, 1);
+insert into grammar_positions values(9, 2, null, 3, null, 1);
+insert into grammar_positions values(10, 3, null, 3, null, 1);
+insert into grammar_positions values(11, 4, null, 3, null, 1);
+insert into grammar_positions values(12, 5, null, 3, null, 1);
+insert into grammar_positions values(13, 6, null, 3, null, 1);
+insert into grammar_positions values(14, 7, null, 3, null, 1);
+
+-- conjugation verb
+-- present
+insert into grammar_positions values(15, null, 1, 1, 1, null);
+insert into grammar_positions values(16, null, 2, 1, 1, null);
+insert into grammar_positions values(17, null, 3, 1, 1, null);
+insert into grammar_positions values(18, null, 1, 3, 1, null);
+insert into grammar_positions values(19, null, 2, 3, 1, null);
+insert into grammar_positions values(20, null, 3, 3, 1, null);
+-- aorist
+insert into grammar_positions values(21, null, 1, 1, 3, null);
+insert into grammar_positions values(22, null, 2, 1, 3, null);
+insert into grammar_positions values(23, null, 3, 1, 3, null);
+insert into grammar_positions values(24, null, 1, 3, 3, null);
+insert into grammar_positions values(25, null, 2, 3, 3, null);
+insert into grammar_positions values(26, null, 3, 3, 3, null);
+
+
+-- participle
+insert into grammar_positions values(27, null, null, 1, 3, 1);
+insert into grammar_positions values(28, null, null, 1, 3, 2);
+insert into grammar_positions values(29, null, null, 1, 3, 3);

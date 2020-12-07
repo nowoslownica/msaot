@@ -6,5 +6,8 @@ no-hooks = true
 dbname = "../../test-db.db"
 blacklist = ["schema_migrations"]
 
-[aliases.tables.flexies.columns]
-gPosition = "GPositionValue"
+[aliases.tables.lemmas]
+up_plural     = "Lemmas"
+up_singular   = "Lemma"
+down_plural   = "lemmas"
+down_singular = "lemma"

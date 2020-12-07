@@ -1,0 +1,31 @@
+insert into lemmas values(1, 'мама', 'n', 1);
+insert into lemmas values(2, 'я', 'pron', 21);
+insert into lemmas values(3, 'идти', 'v', 11);
+insert into lemmas values(4, 'гулять', 'v', 12);
+insert into lemmas values(5, 'по', 'prep', null);
+insert into lemmas values(6, 'красивый', 'adj', 5);
+insert into lemmas values(7, 'город', 'n', 5);
+insert into lemmas values(8, 'быть', 'v', 20);
+
+insert into flexies values(1, 'мама', 1, 1);
+insert into flexies values(2, 'мамы', 1, 2);
+insert into flexies values(3, 'маму', 1, 3);
+insert into flexies values(4, 'маме', 1, 4);
+insert into flexies values(5, 'мамой', 1, 5);
+insert into flexies values(6, 'маме', 1, 6);
+insert into flexies values(7, 'мамо', 1, 7);
+insert into flexies values(8, 'мамы', 1, 8);
+insert into flexies values(9, 'мам', 1, 9);
+insert into flexies values(10, 'мам', 1, 10);
+insert into flexies values(11, 'мамам', 1, 11);
+insert into flexies values(12, 'мамами', 1, 12);
+insert into flexies values(13, 'мамах', 1, 13);
+insert into flexies values(14, 'мамы', 1, 14);
+
+insert into flexies values(15, 'я', 2, 1);
+insert into flexies values(16, 'есмь', 8, 15);
+insert into flexies values(17, 'пошёл', 3, 27);
+insert into flexies values(18, 'гулять', 4, 0);
+insert into flexies values(19, 'по', 5, 0);
+insert into flexies values(20, 'красивому', 6, 4);
+insert into flexies values(21, 'городу', 7, 4);

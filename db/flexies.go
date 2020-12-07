@@ -18,5 +18,9 @@ func (c *sqliteDB) Flexies() *Flexies {
 }
 
 func (f *Flexies) GetByValue(ctx context.Context, word string) ([]*models.Flexy, error) {
-	return models.Flexies(models.FlexyWhere.Value.EQ(word), qm.Load(models.FlexyRels.GPositionGrammarPosition)).All(ctx, f.db)
+	return models.Flexies(
+		models.FlexyWhere.Value.EQ(word),
+		qm.Load(models.FlexyRels.GPositionIdGrammarPosition),
+		qm.Load(models.FlexyRels.LemmaIdLemmas),
+	).All(ctx, f.db)
 }

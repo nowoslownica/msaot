@@ -11,9 +11,9 @@ type NCase struct {
 }
 
 type VCase struct {
-	Person string
-	Number string
-	Tense  string
+	Person int
+	Number int
+	Tense  int
 }
 
 type Lemma struct {
@@ -46,6 +46,46 @@ func Build(normal string, config GrammarConfig) *Lemma {
 	return nil
 }
 
+func NormalizeAuto(word string) ([]*Lemma, error) {
+	flexies, err := lexicon.GetFlexForm(word)
+	if err != nil {
+		return nil, err
+	}
+	res := make([]*Lemma, 0)
+	for _, flexy := range flexies {
+		var nCase *NCase
+		var vCase *VCase
+		position := flexy.R.GPositionIdGrammarPosition
+		if position.GCase.Valid {
+			var person *int
+			if position.GPerson.Valid {
+				personValue := int(position.GPerson.Int64)
+				person = &personValue
+			}
+			nCase = &NCase{
+				Case: lexicon.Case(position.GCase.Int64),
+				Number: int(position.GNumber.Int64),
+				Person: person,
+			}
+		}
+		if position.GTense.Valid {
+			vCase = &VCase{
+				Person: int(position.GPerson.Int64),
+				Number: int(position.GNumber.Int64),
+				Tense:  int(position.GTense.Int64),
+			}
+		}
+		res = append(res, &Lemma{
+			Normal: flexy.R.LemmaIdLemmas.Value,
+			Value:  flexy.Value,
+			Pos:    flexy.R.LemmaIdLemmas.Pos,
+			nCase:  nCase,
+			vCase:  vCase,
+		})
+	}
+	return res, nil
+}
+
 func Normalize(word string, config FlexyConfig) (*Lemma, error) {
 	switch config.POS {
 	case lexicon.NOUN:
@@ -62,8 +102,8 @@ func NormalizeNoun(word string, config NounFlexyConfig) (*Lemma, error) {
 	}
 	var lemma *Lemma
 	for _, form := range flexies {
-		if form.R.GPositionGrammarPosition != nil {
-			position := form.R.GPositionGrammarPosition
+		if form.R.GPositionIdGrammarPosition != nil && form.R.LemmaIdLemmas != nil {
+			position := form.R.GPositionIdGrammarPosition
 			gCase := position.GCase
 			gNumber := position.GNumber
 			if gNumber.Valid &&
@@ -75,10 +115,11 @@ func NormalizeNoun(word string, config NounFlexyConfig) (*Lemma, error) {
 					value := int(position.GPerson.Int64)
 					person = &value
 				}
+				lemmaValue := form.R.LemmaIdLemmas
 				lemma = &Lemma{
-					Normal: form.Normal,
+					Normal: lemmaValue.Value,
 					Value:  form.Value,
-					Pos:    form.Pos,
+					Pos:    lemmaValue.Pos,
 					nCase:  &NCase{
 						Case:   lexicon.Case(gCase.Int64),
 						Number: int(gNumber.Int64),

@@ -23,28 +23,25 @@ import (
 
 // Flexy is an object representing the database table.
 type Flexy struct {
-	ID        null.Int64 `boil:"id" json:"id,omitempty" toml:"id" yaml:"id,omitempty"`
-	Value     string     `boil:"value" json:"value" toml:"value" yaml:"value"`
-	Normal    string     `boil:"normal" json:"normal" toml:"normal" yaml:"normal"`
-	Pos       string     `boil:"pos" json:"pos" toml:"pos" yaml:"pos"`
-	GPosition null.Int64 `boil:"gPosition" json:"gPosition,omitempty" toml:"gPosition" yaml:"gPosition,omitempty"`
+	ID          null.Int64 `boil:"id" json:"id,omitempty" toml:"id" yaml:"id,omitempty"`
+	Value       string     `boil:"value" json:"value" toml:"value" yaml:"value"`
+	LemmaId     null.Int64 `boil:"lemmaId" json:"lemmaId,omitempty" toml:"lemmaId" yaml:"lemmaId,omitempty"`
+	GPositionId null.Int64 `boil:"gPositionId" json:"gPositionId,omitempty" toml:"gPositionId" yaml:"gPositionId,omitempty"`
 
 	R *flexyR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L flexyL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var FlexyColumns = struct {
-	ID        string
-	Value     string
-	Normal    string
-	Pos       string
-	GPosition string
+	ID          string
+	Value       string
+	LemmaId     string
+	GPositionId string
 }{
-	ID:        "id",
-	Value:     "value",
-	Normal:    "normal",
-	Pos:       "pos",
-	GPosition: "gPosition",
+	ID:          "id",
+	Value:       "value",
+	LemmaId:     "lemmaId",
+	GPositionId: "gPositionId",
 }
 
 // Generated where
@@ -96,29 +93,30 @@ func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
 }
 
 var FlexyWhere = struct {
-	ID        whereHelpernull_Int64
-	Value     whereHelperstring
-	Normal    whereHelperstring
-	Pos       whereHelperstring
-	GPosition whereHelpernull_Int64
+	ID          whereHelpernull_Int64
+	Value       whereHelperstring
+	LemmaId     whereHelpernull_Int64
+	GPositionId whereHelpernull_Int64
 }{
-	ID:        whereHelpernull_Int64{field: "\"flexies\".\"id\""},
-	Value:     whereHelperstring{field: "\"flexies\".\"value\""},
-	Normal:    whereHelperstring{field: "\"flexies\".\"normal\""},
-	Pos:       whereHelperstring{field: "\"flexies\".\"pos\""},
-	GPosition: whereHelpernull_Int64{field: "\"flexies\".\"gPosition\""},
+	ID:          whereHelpernull_Int64{field: "\"flexies\".\"id\""},
+	Value:       whereHelperstring{field: "\"flexies\".\"value\""},
+	LemmaId:     whereHelpernull_Int64{field: "\"flexies\".\"lemmaId\""},
+	GPositionId: whereHelpernull_Int64{field: "\"flexies\".\"gPositionId\""},
 }
 
 // FlexyRels is where relationship names are stored.
 var FlexyRels = struct {
-	GPositionGrammarPosition string
+	GPositionIdGrammarPosition string
+	LemmaIdLemmas              string
 }{
-	GPositionGrammarPosition: "GPositionGrammarPosition",
+	GPositionIdGrammarPosition: "GPositionIdGrammarPosition",
+	LemmaIdLemmas:              "LemmaIdLemmas",
 }
 
 // flexyR is where relationships are stored.
 type flexyR struct {
-	GPositionGrammarPosition *GrammarPosition `boil:"GPositionGrammarPosition" json:"GPositionGrammarPosition" toml:"GPositionGrammarPosition" yaml:"GPositionGrammarPosition"`
+	GPositionIdGrammarPosition *GrammarPosition `boil:"GPositionIdGrammarPosition" json:"GPositionIdGrammarPosition" toml:"GPositionIdGrammarPosition" yaml:"GPositionIdGrammarPosition"`
+	LemmaIdLemmas              *Lemma           `boil:"LemmaIdLemmas" json:"LemmaIdLemmas" toml:"LemmaIdLemmas" yaml:"LemmaIdLemmas"`
 }
 
 // NewStruct creates a new relationship struct
@@ -130,8 +128,8 @@ func (*flexyR) NewStruct() *flexyR {
 type flexyL struct{}
 
 var (
-	flexyAllColumns            = []string{"id", "value", "normal", "pos", "gPosition"}
-	flexyColumnsWithoutDefault = []string{"id", "value", "normal", "pos", "gPosition"}
+	flexyAllColumns            = []string{"id", "value", "lemmaId", "gPositionId"}
+	flexyColumnsWithoutDefault = []string{"id", "value", "lemmaId", "gPositionId"}
 	flexyColumnsWithDefault    = []string{}
 	flexyPrimaryKeyColumns     = []string{"id"}
 )
@@ -227,10 +225,10 @@ func (q flexyQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool
 	return count > 0, nil
 }
 
-// GPositionGrammarPosition pointed to by the foreign key.
-func (o *Flexy) GPositionGrammarPosition(mods ...qm.QueryMod) grammarPositionQuery {
+// GPositionIdGrammarPosition pointed to by the foreign key.
+func (o *Flexy) GPositionIdGrammarPosition(mods ...qm.QueryMod) grammarPositionQuery {
 	queryMods := []qm.QueryMod{
-		qm.Where("\"id\" = ?", o.GPosition),
+		qm.Where("\"id\" = ?", o.GPositionId),
 	}
 
 	queryMods = append(queryMods, mods...)
@@ -241,9 +239,23 @@ func (o *Flexy) GPositionGrammarPosition(mods ...qm.QueryMod) grammarPositionQue
 	return query
 }
 
-// LoadGPositionGrammarPosition allows an eager lookup of values, cached into the
+// LemmaIdLemmas pointed to by the foreign key.
+func (o *Flexy) LemmaIdLemmas(mods ...qm.QueryMod) lemmaQuery {
+	queryMods := []qm.QueryMod{
+		qm.Where("\"id\" = ?", o.LemmaId),
+	}
+
+	queryMods = append(queryMods, mods...)
+
+	query := Lemmas(queryMods...)
+	queries.SetFrom(query.Query, "\"lemmas\"")
+
+	return query
+}
+
+// LoadGPositionIdGrammarPosition allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for an N-1 relationship.
-func (flexyL) LoadGPositionGrammarPosition(ctx context.Context, e boil.ContextExecutor, singular bool, maybeFlexy interface{}, mods queries.Applicator) error {
+func (flexyL) LoadGPositionIdGrammarPosition(ctx context.Context, e boil.ContextExecutor, singular bool, maybeFlexy interface{}, mods queries.Applicator) error {
 	var slice []*Flexy
 	var object *Flexy
 
@@ -258,8 +270,8 @@ func (flexyL) LoadGPositionGrammarPosition(ctx context.Context, e boil.ContextEx
 		if object.R == nil {
 			object.R = &flexyR{}
 		}
-		if !queries.IsNil(object.GPosition) {
-			args = append(args, object.GPosition)
+		if !queries.IsNil(object.GPositionId) {
+			args = append(args, object.GPositionId)
 		}
 
 	} else {
@@ -270,13 +282,13 @@ func (flexyL) LoadGPositionGrammarPosition(ctx context.Context, e boil.ContextEx
 			}
 
 			for _, a := range args {
-				if queries.Equal(a, obj.GPosition) {
+				if queries.Equal(a, obj.GPositionId) {
 					continue Outer
 				}
 			}
 
-			if !queries.IsNil(obj.GPosition) {
-				args = append(args, obj.GPosition)
+			if !queries.IsNil(obj.GPositionId) {
+				args = append(args, obj.GPositionId)
 			}
 
 		}
@@ -317,22 +329,22 @@ func (flexyL) LoadGPositionGrammarPosition(ctx context.Context, e boil.ContextEx
 
 	if singular {
 		foreign := resultSlice[0]
-		object.R.GPositionGrammarPosition = foreign
+		object.R.GPositionIdGrammarPosition = foreign
 		if foreign.R == nil {
 			foreign.R = &grammarPositionR{}
 		}
-		foreign.R.GPositionFlexies = append(foreign.R.GPositionFlexies, object)
+		foreign.R.GPositionIdFlexies = append(foreign.R.GPositionIdFlexies, object)
 		return nil
 	}
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if queries.Equal(local.GPosition, foreign.ID) {
-				local.R.GPositionGrammarPosition = foreign
+			if queries.Equal(local.GPositionId, foreign.ID) {
+				local.R.GPositionIdGrammarPosition = foreign
 				if foreign.R == nil {
 					foreign.R = &grammarPositionR{}
 				}
-				foreign.R.GPositionFlexies = append(foreign.R.GPositionFlexies, local)
+				foreign.R.GPositionIdFlexies = append(foreign.R.GPositionIdFlexies, local)
 				break
 			}
 		}
@@ -341,10 +353,110 @@ func (flexyL) LoadGPositionGrammarPosition(ctx context.Context, e boil.ContextEx
 	return nil
 }
 
-// SetGPositionGrammarPosition of the flexy to the related item.
-// Sets o.R.GPositionGrammarPosition to related.
-// Adds o to related.R.GPositionFlexies.
-func (o *Flexy) SetGPositionGrammarPosition(ctx context.Context, exec boil.ContextExecutor, insert bool, related *GrammarPosition) error {
+// LoadLemmaIdLemmas allows an eager lookup of values, cached into the
+// loaded structs of the objects. This is for an N-1 relationship.
+func (flexyL) LoadLemmaIdLemmas(ctx context.Context, e boil.ContextExecutor, singular bool, maybeFlexy interface{}, mods queries.Applicator) error {
+	var slice []*Flexy
+	var object *Flexy
+
+	if singular {
+		object = maybeFlexy.(*Flexy)
+	} else {
+		slice = *maybeFlexy.(*[]*Flexy)
+	}
+
+	args := make([]interface{}, 0, 1)
+	if singular {
+		if object.R == nil {
+			object.R = &flexyR{}
+		}
+		if !queries.IsNil(object.LemmaId) {
+			args = append(args, object.LemmaId)
+		}
+
+	} else {
+	Outer:
+		for _, obj := range slice {
+			if obj.R == nil {
+				obj.R = &flexyR{}
+			}
+
+			for _, a := range args {
+				if queries.Equal(a, obj.LemmaId) {
+					continue Outer
+				}
+			}
+
+			if !queries.IsNil(obj.LemmaId) {
+				args = append(args, obj.LemmaId)
+			}
+
+		}
+	}
+
+	if len(args) == 0 {
+		return nil
+	}
+
+	query := NewQuery(
+		qm.From(`lemmas`),
+		qm.WhereIn(`lemmas.id in ?`, args...),
+	)
+	if mods != nil {
+		mods.Apply(query)
+	}
+
+	results, err := query.QueryContext(ctx, e)
+	if err != nil {
+		return errors.Wrap(err, "failed to eager load Lemma")
+	}
+
+	var resultSlice []*Lemma
+	if err = queries.Bind(results, &resultSlice); err != nil {
+		return errors.Wrap(err, "failed to bind eager loaded slice Lemma")
+	}
+
+	if err = results.Close(); err != nil {
+		return errors.Wrap(err, "failed to close results of eager load for lemmas")
+	}
+	if err = results.Err(); err != nil {
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for lemmas")
+	}
+
+	if len(resultSlice) == 0 {
+		return nil
+	}
+
+	if singular {
+		foreign := resultSlice[0]
+		object.R.LemmaIdLemmas = foreign
+		if foreign.R == nil {
+			foreign.R = &lemmaR{}
+		}
+		foreign.R.LemmaIdFlexies = append(foreign.R.LemmaIdFlexies, object)
+		return nil
+	}
+
+	for _, local := range slice {
+		for _, foreign := range resultSlice {
+			if queries.Equal(local.LemmaId, foreign.ID) {
+				local.R.LemmaIdLemmas = foreign
+				if foreign.R == nil {
+					foreign.R = &lemmaR{}
+				}
+				foreign.R.LemmaIdFlexies = append(foreign.R.LemmaIdFlexies, local)
+				break
+			}
+		}
+	}
+
+	return nil
+}
+
+// SetGPositionIdGrammarPosition of the flexy to the related item.
+// Sets o.R.GPositionIdGrammarPosition to related.
+// Adds o to related.R.GPositionIdFlexies.
+func (o *Flexy) SetGPositionIdGrammarPosition(ctx context.Context, exec boil.ContextExecutor, insert bool, related *GrammarPosition) error {
 	var err error
 	if insert {
 		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
@@ -354,7 +466,7 @@ func (o *Flexy) SetGPositionGrammarPosition(ctx context.Context, exec boil.Conte
 
 	updateQuery := fmt.Sprintf(
 		"UPDATE \"flexies\" SET %s WHERE %s",
-		strmangle.SetParamNames("\"", "\"", 0, []string{"gPosition"}),
+		strmangle.SetParamNames("\"", "\"", 0, []string{"gPositionId"}),
 		strmangle.WhereClause("\"", "\"", 0, flexyPrimaryKeyColumns),
 	)
 	values := []interface{}{related.ID, o.ID}
@@ -368,54 +480,134 @@ func (o *Flexy) SetGPositionGrammarPosition(ctx context.Context, exec boil.Conte
 		return errors.Wrap(err, "failed to update local table")
 	}
 
-	queries.Assign(&o.GPosition, related.ID)
+	queries.Assign(&o.GPositionId, related.ID)
 	if o.R == nil {
 		o.R = &flexyR{
-			GPositionGrammarPosition: related,
+			GPositionIdGrammarPosition: related,
 		}
 	} else {
-		o.R.GPositionGrammarPosition = related
+		o.R.GPositionIdGrammarPosition = related
 	}
 
 	if related.R == nil {
 		related.R = &grammarPositionR{
-			GPositionFlexies: FlexySlice{o},
+			GPositionIdFlexies: FlexySlice{o},
 		}
 	} else {
-		related.R.GPositionFlexies = append(related.R.GPositionFlexies, o)
+		related.R.GPositionIdFlexies = append(related.R.GPositionIdFlexies, o)
 	}
 
 	return nil
 }
 
-// RemoveGPositionGrammarPosition relationship.
-// Sets o.R.GPositionGrammarPosition to nil.
+// RemoveGPositionIdGrammarPosition relationship.
+// Sets o.R.GPositionIdGrammarPosition to nil.
 // Removes o from all passed in related items' relationships struct (Optional).
-func (o *Flexy) RemoveGPositionGrammarPosition(ctx context.Context, exec boil.ContextExecutor, related *GrammarPosition) error {
+func (o *Flexy) RemoveGPositionIdGrammarPosition(ctx context.Context, exec boil.ContextExecutor, related *GrammarPosition) error {
 	var err error
 
-	queries.SetScanner(&o.GPosition, nil)
-	if _, err = o.Update(ctx, exec, boil.Whitelist("gPosition")); err != nil {
+	queries.SetScanner(&o.GPositionId, nil)
+	if _, err = o.Update(ctx, exec, boil.Whitelist("gPositionId")); err != nil {
 		return errors.Wrap(err, "failed to update local table")
 	}
 
 	if o.R != nil {
-		o.R.GPositionGrammarPosition = nil
+		o.R.GPositionIdGrammarPosition = nil
 	}
 	if related == nil || related.R == nil {
 		return nil
 	}
 
-	for i, ri := range related.R.GPositionFlexies {
-		if queries.Equal(o.GPosition, ri.GPosition) {
+	for i, ri := range related.R.GPositionIdFlexies {
+		if queries.Equal(o.GPositionId, ri.GPositionId) {
 			continue
 		}
 
-		ln := len(related.R.GPositionFlexies)
+		ln := len(related.R.GPositionIdFlexies)
 		if ln > 1 && i < ln-1 {
-			related.R.GPositionFlexies[i] = related.R.GPositionFlexies[ln-1]
+			related.R.GPositionIdFlexies[i] = related.R.GPositionIdFlexies[ln-1]
 		}
-		related.R.GPositionFlexies = related.R.GPositionFlexies[:ln-1]
+		related.R.GPositionIdFlexies = related.R.GPositionIdFlexies[:ln-1]
+		break
+	}
+	return nil
+}
+
+// SetLemmaIdLemmas of the flexy to the related item.
+// Sets o.R.LemmaIdLemmas to related.
+// Adds o to related.R.LemmaIdFlexies.
+func (o *Flexy) SetLemmaIdLemmas(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Lemma) error {
+	var err error
+	if insert {
+		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
+			return errors.Wrap(err, "failed to insert into foreign table")
+		}
+	}
+
+	updateQuery := fmt.Sprintf(
+		"UPDATE \"flexies\" SET %s WHERE %s",
+		strmangle.SetParamNames("\"", "\"", 0, []string{"lemmaId"}),
+		strmangle.WhereClause("\"", "\"", 0, flexyPrimaryKeyColumns),
+	)
+	values := []interface{}{related.ID, o.ID}
+
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, updateQuery)
+		fmt.Fprintln(writer, values)
+	}
+	if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
+		return errors.Wrap(err, "failed to update local table")
+	}
+
+	queries.Assign(&o.LemmaId, related.ID)
+	if o.R == nil {
+		o.R = &flexyR{
+			LemmaIdLemmas: related,
+		}
+	} else {
+		o.R.LemmaIdLemmas = related
+	}
+
+	if related.R == nil {
+		related.R = &lemmaR{
+			LemmaIdFlexies: FlexySlice{o},
+		}
+	} else {
+		related.R.LemmaIdFlexies = append(related.R.LemmaIdFlexies, o)
+	}
+
+	return nil
+}
+
+// RemoveLemmaIdLemmas relationship.
+// Sets o.R.LemmaIdLemmas to nil.
+// Removes o from all passed in related items' relationships struct (Optional).
+func (o *Flexy) RemoveLemmaIdLemmas(ctx context.Context, exec boil.ContextExecutor, related *Lemma) error {
+	var err error
+
+	queries.SetScanner(&o.LemmaId, nil)
+	if _, err = o.Update(ctx, exec, boil.Whitelist("lemmaId")); err != nil {
+		return errors.Wrap(err, "failed to update local table")
+	}
+
+	if o.R != nil {
+		o.R.LemmaIdLemmas = nil
+	}
+	if related == nil || related.R == nil {
+		return nil
+	}
+
+	for i, ri := range related.R.LemmaIdFlexies {
+		if queries.Equal(o.LemmaId, ri.LemmaId) {
+			continue
+		}
+
+		ln := len(related.R.LemmaIdFlexies)
+		if ln > 1 && i < ln-1 {
+			related.R.LemmaIdFlexies[i] = related.R.LemmaIdFlexies[ln-1]
+		}
+		related.R.LemmaIdFlexies = related.R.LemmaIdFlexies[:ln-1]
 		break
 	}
 	return nil

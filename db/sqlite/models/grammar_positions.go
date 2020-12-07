@@ -23,71 +23,61 @@ import (
 
 // GrammarPosition is an object representing the database table.
 type GrammarPosition struct {
-	ID          null.Int64 `boil:"id" json:"id,omitempty" toml:"id" yaml:"id,omitempty"`
-	GCase       null.Int64 `boil:"gCase" json:"gCase,omitempty" toml:"gCase" yaml:"gCase,omitempty"`
-	GPerson     null.Int64 `boil:"gPerson" json:"gPerson,omitempty" toml:"gPerson" yaml:"gPerson,omitempty"`
-	GNumber     null.Int64 `boil:"gNumber" json:"gNumber,omitempty" toml:"gNumber" yaml:"gNumber,omitempty"`
-	GTense      null.Int64 `boil:"gTense" json:"gTense,omitempty" toml:"gTense" yaml:"gTense,omitempty"`
-	GGender     null.Int64 `boil:"gGender" json:"gGender,omitempty" toml:"gGender" yaml:"gGender,omitempty"`
-	Declension  null.Int64 `boil:"declension" json:"declension,omitempty" toml:"declension" yaml:"declension,omitempty"`
-	Conjugation null.Int64 `boil:"conjugation" json:"conjugation,omitempty" toml:"conjugation" yaml:"conjugation,omitempty"`
+	ID      null.Int64 `boil:"id" json:"id,omitempty" toml:"id" yaml:"id,omitempty"`
+	GCase   null.Int64 `boil:"gCase" json:"gCase,omitempty" toml:"gCase" yaml:"gCase,omitempty"`
+	GPerson null.Int64 `boil:"gPerson" json:"gPerson,omitempty" toml:"gPerson" yaml:"gPerson,omitempty"`
+	GNumber null.Int64 `boil:"gNumber" json:"gNumber,omitempty" toml:"gNumber" yaml:"gNumber,omitempty"`
+	GTense  null.Int64 `boil:"gTense" json:"gTense,omitempty" toml:"gTense" yaml:"gTense,omitempty"`
+	GGender null.Int64 `boil:"gGender" json:"gGender,omitempty" toml:"gGender" yaml:"gGender,omitempty"`
 
 	R *grammarPositionR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L grammarPositionL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var GrammarPositionColumns = struct {
-	ID          string
-	GCase       string
-	GPerson     string
-	GNumber     string
-	GTense      string
-	GGender     string
-	Declension  string
-	Conjugation string
+	ID      string
+	GCase   string
+	GPerson string
+	GNumber string
+	GTense  string
+	GGender string
 }{
-	ID:          "id",
-	GCase:       "gCase",
-	GPerson:     "gPerson",
-	GNumber:     "gNumber",
-	GTense:      "gTense",
-	GGender:     "gGender",
-	Declension:  "declension",
-	Conjugation: "conjugation",
+	ID:      "id",
+	GCase:   "gCase",
+	GPerson: "gPerson",
+	GNumber: "gNumber",
+	GTense:  "gTense",
+	GGender: "gGender",
 }
 
 // Generated where
 
 var GrammarPositionWhere = struct {
-	ID          whereHelpernull_Int64
-	GCase       whereHelpernull_Int64
-	GPerson     whereHelpernull_Int64
-	GNumber     whereHelpernull_Int64
-	GTense      whereHelpernull_Int64
-	GGender     whereHelpernull_Int64
-	Declension  whereHelpernull_Int64
-	Conjugation whereHelpernull_Int64
+	ID      whereHelpernull_Int64
+	GCase   whereHelpernull_Int64
+	GPerson whereHelpernull_Int64
+	GNumber whereHelpernull_Int64
+	GTense  whereHelpernull_Int64
+	GGender whereHelpernull_Int64
 }{
-	ID:          whereHelpernull_Int64{field: "\"grammar_positions\".\"id\""},
-	GCase:       whereHelpernull_Int64{field: "\"grammar_positions\".\"gCase\""},
-	GPerson:     whereHelpernull_Int64{field: "\"grammar_positions\".\"gPerson\""},
-	GNumber:     whereHelpernull_Int64{field: "\"grammar_positions\".\"gNumber\""},
-	GTense:      whereHelpernull_Int64{field: "\"grammar_positions\".\"gTense\""},
-	GGender:     whereHelpernull_Int64{field: "\"grammar_positions\".\"gGender\""},
-	Declension:  whereHelpernull_Int64{field: "\"grammar_positions\".\"declension\""},
-	Conjugation: whereHelpernull_Int64{field: "\"grammar_positions\".\"conjugation\""},
+	ID:      whereHelpernull_Int64{field: "\"grammar_positions\".\"id\""},
+	GCase:   whereHelpernull_Int64{field: "\"grammar_positions\".\"gCase\""},
+	GPerson: whereHelpernull_Int64{field: "\"grammar_positions\".\"gPerson\""},
+	GNumber: whereHelpernull_Int64{field: "\"grammar_positions\".\"gNumber\""},
+	GTense:  whereHelpernull_Int64{field: "\"grammar_positions\".\"gTense\""},
+	GGender: whereHelpernull_Int64{field: "\"grammar_positions\".\"gGender\""},
 }
 
 // GrammarPositionRels is where relationship names are stored.
 var GrammarPositionRels = struct {
-	GPositionFlexies string
+	GPositionIdFlexies string
 }{
-	GPositionFlexies: "GPositionFlexies",
+	GPositionIdFlexies: "GPositionIdFlexies",
 }
 
 // grammarPositionR is where relationships are stored.
 type grammarPositionR struct {
-	GPositionFlexies FlexySlice `boil:"GPositionFlexies" json:"GPositionFlexies" toml:"GPositionFlexies" yaml:"GPositionFlexies"`
+	GPositionIdFlexies FlexySlice `boil:"GPositionIdFlexies" json:"GPositionIdFlexies" toml:"GPositionIdFlexies" yaml:"GPositionIdFlexies"`
 }
 
 // NewStruct creates a new relationship struct
@@ -99,8 +89,8 @@ func (*grammarPositionR) NewStruct() *grammarPositionR {
 type grammarPositionL struct{}
 
 var (
-	grammarPositionAllColumns            = []string{"id", "gCase", "gPerson", "gNumber", "gTense", "gGender", "declension", "conjugation"}
-	grammarPositionColumnsWithoutDefault = []string{"id", "gCase", "gPerson", "gNumber", "gTense", "gGender", "declension", "conjugation"}
+	grammarPositionAllColumns            = []string{"id", "gCase", "gPerson", "gNumber", "gTense", "gGender"}
+	grammarPositionColumnsWithoutDefault = []string{"id", "gCase", "gPerson", "gNumber", "gTense", "gGender"}
 	grammarPositionColumnsWithDefault    = []string{}
 	grammarPositionPrimaryKeyColumns     = []string{"id"}
 )
@@ -196,15 +186,15 @@ func (q grammarPositionQuery) Exists(ctx context.Context, exec boil.ContextExecu
 	return count > 0, nil
 }
 
-// GPositionFlexies retrieves all the flexy's Flexies with an executor via gPosition column.
-func (o *GrammarPosition) GPositionFlexies(mods ...qm.QueryMod) flexyQuery {
+// GPositionIdFlexies retrieves all the flexy's Flexies with an executor via gPositionId column.
+func (o *GrammarPosition) GPositionIdFlexies(mods ...qm.QueryMod) flexyQuery {
 	var queryMods []qm.QueryMod
 	if len(mods) != 0 {
 		queryMods = append(queryMods, mods...)
 	}
 
 	queryMods = append(queryMods,
-		qm.Where("\"flexies\".\"gPosition\"=?", o.ID),
+		qm.Where("\"flexies\".\"gPositionId\"=?", o.ID),
 	)
 
 	query := Flexies(queryMods...)
@@ -217,9 +207,9 @@ func (o *GrammarPosition) GPositionFlexies(mods ...qm.QueryMod) flexyQuery {
 	return query
 }
 
-// LoadGPositionFlexies allows an eager lookup of values, cached into the
+// LoadGPositionIdFlexies allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for a 1-M or N-M relationship.
-func (grammarPositionL) LoadGPositionFlexies(ctx context.Context, e boil.ContextExecutor, singular bool, maybeGrammarPosition interface{}, mods queries.Applicator) error {
+func (grammarPositionL) LoadGPositionIdFlexies(ctx context.Context, e boil.ContextExecutor, singular bool, maybeGrammarPosition interface{}, mods queries.Applicator) error {
 	var slice []*GrammarPosition
 	var object *GrammarPosition
 
@@ -258,7 +248,7 @@ func (grammarPositionL) LoadGPositionFlexies(ctx context.Context, e boil.Context
 
 	query := NewQuery(
 		qm.From(`flexies`),
-		qm.WhereIn(`flexies.gPosition in ?`, args...),
+		qm.WhereIn(`flexies.gPositionId in ?`, args...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -282,24 +272,24 @@ func (grammarPositionL) LoadGPositionFlexies(ctx context.Context, e boil.Context
 	}
 
 	if singular {
-		object.R.GPositionFlexies = resultSlice
+		object.R.GPositionIdFlexies = resultSlice
 		for _, foreign := range resultSlice {
 			if foreign.R == nil {
 				foreign.R = &flexyR{}
 			}
-			foreign.R.GPositionGrammarPosition = object
+			foreign.R.GPositionIdGrammarPosition = object
 		}
 		return nil
 	}
 
 	for _, foreign := range resultSlice {
 		for _, local := range slice {
-			if queries.Equal(local.ID, foreign.GPosition) {
-				local.R.GPositionFlexies = append(local.R.GPositionFlexies, foreign)
+			if queries.Equal(local.ID, foreign.GPositionId) {
+				local.R.GPositionIdFlexies = append(local.R.GPositionIdFlexies, foreign)
 				if foreign.R == nil {
 					foreign.R = &flexyR{}
 				}
-				foreign.R.GPositionGrammarPosition = local
+				foreign.R.GPositionIdGrammarPosition = local
 				break
 			}
 		}
@@ -308,22 +298,22 @@ func (grammarPositionL) LoadGPositionFlexies(ctx context.Context, e boil.Context
 	return nil
 }
 
-// AddGPositionFlexies adds the given related objects to the existing relationships
+// AddGPositionIdFlexies adds the given related objects to the existing relationships
 // of the grammar_position, optionally inserting them as new records.
-// Appends related to o.R.GPositionFlexies.
-// Sets related.R.GPositionGrammarPosition appropriately.
-func (o *GrammarPosition) AddGPositionFlexies(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*Flexy) error {
+// Appends related to o.R.GPositionIdFlexies.
+// Sets related.R.GPositionIdGrammarPosition appropriately.
+func (o *GrammarPosition) AddGPositionIdFlexies(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*Flexy) error {
 	var err error
 	for _, rel := range related {
 		if insert {
-			queries.Assign(&rel.GPosition, o.ID)
+			queries.Assign(&rel.GPositionId, o.ID)
 			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
 				return errors.Wrap(err, "failed to insert into foreign table")
 			}
 		} else {
 			updateQuery := fmt.Sprintf(
 				"UPDATE \"flexies\" SET %s WHERE %s",
-				strmangle.SetParamNames("\"", "\"", 0, []string{"gPosition"}),
+				strmangle.SetParamNames("\"", "\"", 0, []string{"gPositionId"}),
 				strmangle.WhereClause("\"", "\"", 0, flexyPrimaryKeyColumns),
 			)
 			values := []interface{}{o.ID, rel.ID}
@@ -337,38 +327,38 @@ func (o *GrammarPosition) AddGPositionFlexies(ctx context.Context, exec boil.Con
 				return errors.Wrap(err, "failed to update foreign table")
 			}
 
-			queries.Assign(&rel.GPosition, o.ID)
+			queries.Assign(&rel.GPositionId, o.ID)
 		}
 	}
 
 	if o.R == nil {
 		o.R = &grammarPositionR{
-			GPositionFlexies: related,
+			GPositionIdFlexies: related,
 		}
 	} else {
-		o.R.GPositionFlexies = append(o.R.GPositionFlexies, related...)
+		o.R.GPositionIdFlexies = append(o.R.GPositionIdFlexies, related...)
 	}
 
 	for _, rel := range related {
 		if rel.R == nil {
 			rel.R = &flexyR{
-				GPositionGrammarPosition: o,
+				GPositionIdGrammarPosition: o,
 			}
 		} else {
-			rel.R.GPositionGrammarPosition = o
+			rel.R.GPositionIdGrammarPosition = o
 		}
 	}
 	return nil
 }
 
-// SetGPositionFlexies removes all previously related items of the
+// SetGPositionIdFlexies removes all previously related items of the
 // grammar_position replacing them completely with the passed
 // in related items, optionally inserting them as new records.
-// Sets o.R.GPositionGrammarPosition's GPositionFlexies accordingly.
-// Replaces o.R.GPositionFlexies with related.
-// Sets related.R.GPositionGrammarPosition's GPositionFlexies accordingly.
-func (o *GrammarPosition) SetGPositionFlexies(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*Flexy) error {
-	query := "update \"flexies\" set \"gPosition\" = null where \"gPosition\" = ?"
+// Sets o.R.GPositionIdGrammarPosition's GPositionIdFlexies accordingly.
+// Replaces o.R.GPositionIdFlexies with related.
+// Sets related.R.GPositionIdGrammarPosition's GPositionIdFlexies accordingly.
+func (o *GrammarPosition) SetGPositionIdFlexies(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*Flexy) error {
+	query := "update \"flexies\" set \"gPositionId\" = null where \"gPositionId\" = ?"
 	values := []interface{}{o.ID}
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -381,31 +371,31 @@ func (o *GrammarPosition) SetGPositionFlexies(ctx context.Context, exec boil.Con
 	}
 
 	if o.R != nil {
-		for _, rel := range o.R.GPositionFlexies {
-			queries.SetScanner(&rel.GPosition, nil)
+		for _, rel := range o.R.GPositionIdFlexies {
+			queries.SetScanner(&rel.GPositionId, nil)
 			if rel.R == nil {
 				continue
 			}
 
-			rel.R.GPositionGrammarPosition = nil
+			rel.R.GPositionIdGrammarPosition = nil
 		}
 
-		o.R.GPositionFlexies = nil
+		o.R.GPositionIdFlexies = nil
 	}
-	return o.AddGPositionFlexies(ctx, exec, insert, related...)
+	return o.AddGPositionIdFlexies(ctx, exec, insert, related...)
 }
 
-// RemoveGPositionFlexies relationships from objects passed in.
-// Removes related items from R.GPositionFlexies (uses pointer comparison, removal does not keep order)
-// Sets related.R.GPositionGrammarPosition.
-func (o *GrammarPosition) RemoveGPositionFlexies(ctx context.Context, exec boil.ContextExecutor, related ...*Flexy) error {
+// RemoveGPositionIdFlexies relationships from objects passed in.
+// Removes related items from R.GPositionIdFlexies (uses pointer comparison, removal does not keep order)
+// Sets related.R.GPositionIdGrammarPosition.
+func (o *GrammarPosition) RemoveGPositionIdFlexies(ctx context.Context, exec boil.ContextExecutor, related ...*Flexy) error {
 	var err error
 	for _, rel := range related {
-		queries.SetScanner(&rel.GPosition, nil)
+		queries.SetScanner(&rel.GPositionId, nil)
 		if rel.R != nil {
-			rel.R.GPositionGrammarPosition = nil
+			rel.R.GPositionIdGrammarPosition = nil
 		}
-		if _, err = rel.Update(ctx, exec, boil.Whitelist("gPosition")); err != nil {
+		if _, err = rel.Update(ctx, exec, boil.Whitelist("gPositionId")); err != nil {
 			return err
 		}
 	}
@@ -414,16 +404,16 @@ func (o *GrammarPosition) RemoveGPositionFlexies(ctx context.Context, exec boil.
 	}
 
 	for _, rel := range related {
-		for i, ri := range o.R.GPositionFlexies {
+		for i, ri := range o.R.GPositionIdFlexies {
 			if rel != ri {
 				continue
 			}
 
-			ln := len(o.R.GPositionFlexies)
+			ln := len(o.R.GPositionIdFlexies)
 			if ln > 1 && i < ln-1 {
-				o.R.GPositionFlexies[i] = o.R.GPositionFlexies[ln-1]
+				o.R.GPositionIdFlexies[i] = o.R.GPositionIdFlexies[ln-1]
 			}
-			o.R.GPositionFlexies = o.R.GPositionFlexies[:ln-1]
+			o.R.GPositionIdFlexies = o.R.GPositionIdFlexies[:ln-1]
 			break
 		}
 	}
