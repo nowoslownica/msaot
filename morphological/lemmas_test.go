@@ -3,6 +3,7 @@ package morphological
 import (
 	"fmt"
 	"github.com/eakarpov/msaot/lexicon"
+	_case "github.com/eakarpov/msaot/lexicon/case"
 	"github.com/eakarpov/msaot/lexicon/pos"
 	"testing"
 )
@@ -16,7 +17,7 @@ func TestNormalize(t *testing.T) {
 		POS: pos.NOUN,
 		//Type: "1",
 		nConfig: NounFlexyConfig{
-			Case: lexicon.GENITIVE,
+			Case: _case.GENITIVE,
 			Number: 1,
 		},
 	})

@@ -1,0 +1,17 @@
+package _case
+
+type Case int
+
+const (
+	_ Case = iota
+	NOMINATIVE
+	GENITIVE
+	PARTITIVE
+	ACCUSATIVE
+	DATIVE
+	INSTRUMENTAL
+	PREPOSITIONAL
+	LOCATIVE
+	VOCATIVE
+)
+
