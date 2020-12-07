@@ -28,10 +28,3 @@ const (
 	FUTURE_2
 	FUTURE_IN_THE_PAST
 )
-
-type POS string
-
-const (
-	NOUN = "n"
-	VERB = "v"
-)

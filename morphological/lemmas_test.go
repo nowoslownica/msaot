@@ -3,6 +3,7 @@ package morphological
 import (
 	"fmt"
 	"github.com/eakarpov/msaot/lexicon"
+	"github.com/eakarpov/msaot/lexicon/pos"
 	"testing"
 )
 
@@ -12,7 +13,7 @@ func TestNormalize(t *testing.T) {
 		return
 	}
 	lemma, err := Normalize("мамы", FlexyConfig{
-		POS: lexicon.NOUN,
+		POS: pos.NOUN,
 		//Type: "1",
 		nConfig: NounFlexyConfig{
 			Case: lexicon.GENITIVE,

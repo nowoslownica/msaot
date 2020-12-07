@@ -2,6 +2,7 @@ package morphological
 
 import (
 	"github.com/eakarpov/msaot/lexicon"
+	"github.com/eakarpov/msaot/lexicon/pos"
 )
 
 type NCase struct {
@@ -31,7 +32,7 @@ type GrammarConfig struct {
 }
 
 type FlexyConfig struct {
-	POS lexicon.POS
+	POS pos.POS
 	Type string
 	nConfig NounFlexyConfig
 }
@@ -88,7 +89,7 @@ func NormalizeAuto(word string) ([]*Lemma, error) {
 
 func Normalize(word string, config FlexyConfig) (*Lemma, error) {
 	switch config.POS {
-	case lexicon.NOUN:
+	case pos.NOUN:
 		return NormalizeNoun(word, config.nConfig)
 	default:
 		return nil, nil
