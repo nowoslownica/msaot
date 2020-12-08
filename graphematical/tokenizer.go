@@ -101,6 +101,7 @@ func (t *Tokenizer) Parse(sentence string) *Tokenizer {
 				Value:    string(l),
 				Position: pos,
 			})
+			pos++
 		}
 		prev = l
 	}

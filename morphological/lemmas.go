@@ -10,10 +10,12 @@ type NCase struct {
 	Case   _case.Case
 	Number int
 	Person *int
+	Gender int
 }
 
 type VCase struct {
 	Person int
+	Gender int
 	Number int
 	Tense  int
 }
@@ -21,9 +23,10 @@ type VCase struct {
 type Lemma struct {
 	Normal string
 	Value  string
-	Pos   string
-	nCase  *NCase
-	vCase  *VCase
+	Pos    string
+	NCase  *NCase
+	VCase  *VCase
+	Comma  bool // ???
 }
 
 type GrammarConfig struct {
@@ -68,6 +71,7 @@ func NormalizeAuto(word string) ([]*Lemma, error) {
 				Case: _case.Case(position.GCase.Int64),
 				Number: int(position.GNumber.Int64),
 				Person: person,
+				Gender: int(position.GGender.Int64), // check valid?
 			}
 		}
 		if position.GTense.Valid {
@@ -75,14 +79,15 @@ func NormalizeAuto(word string) ([]*Lemma, error) {
 				Person: int(position.GPerson.Int64),
 				Number: int(position.GNumber.Int64),
 				Tense:  int(position.GTense.Int64),
+				Gender: int(position.GGender.Int64), // check valid?
 			}
 		}
 		res = append(res, &Lemma{
 			Normal: flexy.R.LemmaIdLemmas.Value,
 			Value:  flexy.Value,
 			Pos:    flexy.R.LemmaIdLemmas.Pos,
-			nCase:  nCase,
-			vCase:  vCase,
+			NCase:  nCase,
+			VCase:  vCase,
 		})
 	}
 	return res, nil
@@ -122,7 +127,7 @@ func NormalizeNoun(word string, config NounFlexyConfig) (*Lemma, error) {
 					Normal: lemmaValue.Value,
 					Value:  form.Value,
 					Pos:    lemmaValue.Pos,
-					nCase:  &NCase{
+					NCase:  &NCase{
 						Case:   _case.Case(gCase.Int64),
 						Number: int(gNumber.Int64),
 						Person: person,

@@ -5,6 +5,7 @@ import (
 	"github.com/eakarpov/msaot/morphological"
 )
 
+// with comma separated
 func BuildSyntaxTree(sentence []*morphological.Lemma) (*SyntaxTree, error) {
 	var complexSentence = make([]*Sentence, 0)
 	// zero step - find single sentences
@@ -31,12 +32,20 @@ func BuildSyntaxTree(sentence []*morphological.Lemma) (*SyntaxTree, error) {
 	return &SyntaxTree{ ComplexSentence: complexSentence }, nil
 }
 
+func isParticiple(lemma *morphological.Lemma) bool {
+	vCase := lemma.VCase
+	if vCase.Number > 0 && vCase.Person > 0 && vCase.Gender > 0 {
+		return true
+	}
+	return false
+}
+
 func findPredicate(sentence []*morphological.Lemma) (*Predicate, error) {
 	var pr *Predicate
 
 	for _, word := range sentence {
-		if word.Pos == pos.VERB && word.Value != word.Normal {
-
+		if word.Pos == pos.VERB && word.Value != word.Normal && !isParticiple(word) {
+			pr = &Predicate{Value: word}
 		}
 	}
 

@@ -14,7 +14,7 @@ import (
 func main() {
 	app := &cli.App{
 		Name: "msaot",
-		Usage: "Interslavic automatic language tool",
+		Usage: "Interslavic natural language processing tool",
 		Commands: []*cli.Command{
 			{
 				Name:    "lemma",

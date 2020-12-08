@@ -46,6 +46,15 @@ func TestTokenizer_Parse(t *testing.T) {
 			{ Value: `побережье`, Position: 4},
 			{ Value: "?", Position: 5},
 		}},
+		{ `Я сказал, что это такое.`, []*Token{
+			{ Value: "Я", Position: 0},
+			{ Value: "сказал", Position: 1},
+			{ Value: ",", Position: 2},
+			{ Value: "что", Position: 3},
+			{ Value: `это`, Position: 4},
+			{ Value: "такое", Position: 5},
+			{ Value: ".", Position: 6},
+		}},
 	}
 	for _, test := range testCases {
 		tokenizer := Tokenizer{}
