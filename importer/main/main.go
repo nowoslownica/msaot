@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
+	"github.com/eakarpov/msaot/db"
 	"github.com/eakarpov/msaot/importer"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/sheets/v4"
@@ -41,7 +42,7 @@ func getData() *sheets.ValueRange {
 }
 
 func main() {
-	_, err := os.OpenFile("dictionary.csv", 1,644)
+	_, err := os.Open("dictionary.csv")
 	if err != nil {
 		resp := getData()
 		if len(resp.Values) == 0 {
@@ -51,10 +52,8 @@ func main() {
 			if err != nil {
 				log.Fatalf("Unable to create file: %v", err)
 			}
-			defer file.Close()
 
 			writer := csv.NewWriter(file)
-			defer writer.Flush()
 
 			for _, row := range resp.Values {
 				str := make([]string, 0)
@@ -66,12 +65,33 @@ func main() {
 					log.Fatalf("Unable to write to file: %v", err)
 				}
 			}
+			writer.Flush()
+			err = file.Close()
+			if err != nil {
+				log.Fatalf("Unable to close the file: %v", err)
+			}
 		}
 	}
-	f, err := os.OpenFile("dictionary.csv", 1,644)
+	f, err := os.Open("dictionary.csv")
 	if err != nil {
 		log.Fatalf("Unable to open file %v", err)
 	}
-	fmt.Println(f.Name())
+	defer f.Close()
+	mainDB := db.GetByName("dictionary.db")
+	err = mainDB.InitDB()
+	if err != nil {
+		log.Fatalf("Unable to init db: %v", err)
+	}
+	err = mainDB.Init()
+	if err != nil {
+		log.Fatalf("Unable to open db: %v", err)
+	}
+	csvr := csv.NewReader(f)
+	csvr.FieldsPerRecord = -1
+	lines, err := csvr.ReadAll()
+	if err != nil {
+		log.Fatalf("Unable to read csv %v", err)
+	}
+	fmt.Println(len(lines))
 }
 

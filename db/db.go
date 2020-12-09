@@ -22,6 +22,14 @@ func New() *sqliteDB {
 	return db
 }
 
+func GetByName(name string) *sqliteDB {
+	db := &sqliteDB{
+		db:  nil,
+		name: filepath.Join(name),
+	}
+	return db
+}
+
 func (c *sqliteDB) Init() error {
 	db, err := sql.Open("sqlite3", c.name)
 	if err != nil {
