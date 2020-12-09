@@ -6,6 +6,10 @@
 *.dylib
 .idea
 
+credentials.json
+token.json
+dictionary.csv
+
 # Test binary, built with `go test -c`
 *.test
 
