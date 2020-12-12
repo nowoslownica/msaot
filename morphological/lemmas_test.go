@@ -2,14 +2,14 @@ package morphological
 
 import (
 	"fmt"
-	"github.com/eakarpov/msaot/lexicon"
 	_case "github.com/eakarpov/msaot/lexicon/case"
+	"github.com/eakarpov/msaot/lexicon/dictionary"
 	"github.com/eakarpov/msaot/lexicon/pos"
 	"testing"
 )
 
 func TestNormalize(t *testing.T) {
-	_, closeF, err := lexicon.InitMain()
+	_, closeF, err := dictionary.InitMain()
 	if err != nil {
 		return
 	}

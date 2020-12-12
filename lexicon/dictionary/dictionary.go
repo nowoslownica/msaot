@@ -1,4 +1,4 @@
-package lexicon
+package dictionary
 
 import (
 	"context"

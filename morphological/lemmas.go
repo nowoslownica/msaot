@@ -1,58 +1,20 @@
 package morphological
 
 import (
-	"github.com/eakarpov/msaot/lexicon"
 	_case "github.com/eakarpov/msaot/lexicon/case"
+	"github.com/eakarpov/msaot/lexicon/dictionary"
+	"github.com/eakarpov/msaot/lexicon/gender"
+	"github.com/eakarpov/msaot/lexicon/number"
 	"github.com/eakarpov/msaot/lexicon/pos"
+	"github.com/eakarpov/msaot/lexicon/tense"
 )
-
-type NCase struct {
-	Case   _case.Case
-	Number int
-	Person *int
-	Gender int
-}
-
-type VCase struct {
-	Person int
-	Gender int
-	Number int
-	Tense  int
-}
-
-type Lemma struct {
-	Normal string
-	Value  string
-	Pos    string
-	NCase  *NCase
-	VCase  *VCase
-	Comma  bool // ???
-}
-
-type GrammarConfig struct {
-	POS string
-	Gender *string
-	Type string
-}
-
-type FlexyConfig struct {
-	POS pos.POS
-	Type string
-	nConfig NounFlexyConfig
-}
-
-type NounFlexyConfig struct {
-	Case _case.Case
-	Number int
-	Person string
-}
 
 func Build(normal string, config GrammarConfig) *Lemma {
 	return nil
 }
 
 func NormalizeAuto(word string) ([]*Lemma, error) {
-	flexies, err := lexicon.GetFlexForm(word)
+	flexies, err := dictionary.GetFlexForm(word)
 	if err != nil {
 		return nil, err
 	}
@@ -68,24 +30,24 @@ func NormalizeAuto(word string) ([]*Lemma, error) {
 				person = &personValue
 			}
 			nCase = &NCase{
-				Case: _case.Case(position.GCase.Int64),
-				Number: int(position.GNumber.Int64),
+				Case:   _case.Case(position.GCase.Int64),
+				Number: number.Number(position.GNumber.Int64),
 				Person: person,
-				Gender: int(position.GGender.Int64), // check valid?
+				Gender: gender.Gender(position.GGender.Int64), // check valid?
 			}
 		}
 		if position.GTense.Valid {
 			vCase = &VCase{
 				Person: int(position.GPerson.Int64),
-				Number: int(position.GNumber.Int64),
-				Tense:  int(position.GTense.Int64),
-				Gender: int(position.GGender.Int64), // check valid?
+				Number: number.Number(position.GNumber.Int64),
+				Tense:  tense.Tense(position.GTense.Int64),
+				Gender: gender.Gender(position.GGender.Int64), // check valid?
 			}
 		}
 		res = append(res, &Lemma{
 			Normal: flexy.R.LemmaIdLemmas.Value,
 			Value:  flexy.Value,
-			Pos:    flexy.R.LemmaIdLemmas.Pos,
+			Pos:    pos.POS(flexy.R.LemmaIdLemmas.Pos),
 			NCase:  nCase,
 			VCase:  vCase,
 		})
@@ -103,7 +65,7 @@ func Normalize(word string, config FlexyConfig) (*Lemma, error) {
 }
 
 func NormalizeNoun(word string, config NounFlexyConfig) (*Lemma, error) {
-	flexies, err := lexicon.GetFlexForm(word)
+	flexies, err := dictionary.GetFlexForm(word)
 	if err != nil {
 		return nil, err
 	}
@@ -126,10 +88,10 @@ func NormalizeNoun(word string, config NounFlexyConfig) (*Lemma, error) {
 				lemma = &Lemma{
 					Normal: lemmaValue.Value,
 					Value:  form.Value,
-					Pos:    lemmaValue.Pos,
-					NCase:  &NCase{
+					Pos:    pos.POS(lemmaValue.Pos),
+					NCase: &NCase{
 						Case:   _case.Case(gCase.Int64),
-						Number: int(gNumber.Int64),
+						Number: number.Number(gNumber.Int64),
 						Person: person,
 					},
 				}

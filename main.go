@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/eakarpov/msaot/graphematical"
-	"github.com/eakarpov/msaot/lexicon"
+	"github.com/eakarpov/msaot/lexicon/dictionary"
 	"github.com/eakarpov/msaot/morphological"
 	"github.com/eakarpov/msaot/syntax"
 	"github.com/urfave/cli/v2"
@@ -23,7 +23,7 @@ func main() {
 				Action:  func(c *cli.Context) error {
 					word := c.Args().First()
 					if word != "" {
-						_, close, err := lexicon.InitMain()
+						_, close, err := dictionary.InitMain()
 						if err != nil {
 							return err
 						}
@@ -48,7 +48,7 @@ func main() {
 				Action:  func(c *cli.Context) error {
 					sentence := c.Args().First()
 					if sentence != "" {
-						_, close, err := lexicon.InitMain()
+						_, close, err := dictionary.InitMain()
 						if err != nil {
 							return err
 						}

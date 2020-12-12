@@ -10,4 +10,6 @@ const (
 	PARTICIPLE = "ptcp"
 	ADJECTIVE = "adj"
 	ADVERB = "adv"
+	ORDINAL_NUMERAL = "num.ord"
+	CARDINAL_NUMERAL = "num.card"
 )

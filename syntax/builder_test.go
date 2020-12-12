@@ -3,13 +3,13 @@ package syntax
 import (
 	"fmt"
 	"github.com/eakarpov/msaot/graphematical"
-	"github.com/eakarpov/msaot/lexicon"
+	"github.com/eakarpov/msaot/lexicon/dictionary"
 	"github.com/eakarpov/msaot/morphological"
 	"testing"
 )
 
 func TestBuildSyntaxTree(t *testing.T) {
-	_, close, err := lexicon.InitMain()
+	_, close, err := dictionary.InitMain()
 	if err != nil {
 		t.Error(err)
 	}

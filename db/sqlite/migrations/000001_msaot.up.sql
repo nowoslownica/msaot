@@ -4,7 +4,7 @@ create table grammar_positions (
   gPerson int, -- 1-2-3
   gNumber int, -- 1-2-3
   gTense int, -- 1-2: present, 3-6: past, 7-8: future
-  gGender int -- 1: f, 2: m, 3: n
+  gGender int -- 1: m, 2: f, 3: n
 );
 
 create table lemmas (
@@ -24,20 +24,20 @@ create table flexies (
 insert into grammar_positions values(0, null, null, null, null, null);
 
 -- declension noun/adjective
-insert into grammar_positions values(1, 1, null, 1, null, 1);
-insert into grammar_positions values(2, 2, null, 1, null, 1);
-insert into grammar_positions values(3, 3, null, 1, null, 1);
-insert into grammar_positions values(4, 4, null, 1, null, 1);
-insert into grammar_positions values(5, 5, null, 1, null, 1);
-insert into grammar_positions values(6, 6, null, 1, null, 1);
-insert into grammar_positions values(7, 7, null, 1, null, 1);
-insert into grammar_positions values(8, 1, null, 3, null, 1);
-insert into grammar_positions values(9, 2, null, 3, null, 1);
-insert into grammar_positions values(10, 3, null, 3, null, 1);
-insert into grammar_positions values(11, 4, null, 3, null, 1);
-insert into grammar_positions values(12, 5, null, 3, null, 1);
-insert into grammar_positions values(13, 6, null, 3, null, 1);
-insert into grammar_positions values(14, 7, null, 3, null, 1);
+insert into grammar_positions values(1, 1, null, 1, null, 2);
+insert into grammar_positions values(2, 2, null, 1, null, 2);
+insert into grammar_positions values(3, 3, null, 1, null, 2);
+insert into grammar_positions values(4, 4, null, 1, null, 2);
+insert into grammar_positions values(5, 5, null, 1, null, 2);
+insert into grammar_positions values(6, 6, null, 1, null, 2);
+insert into grammar_positions values(7, 7, null, 1, null, 2);
+insert into grammar_positions values(8, 1, null, 3, null, 2);
+insert into grammar_positions values(9, 2, null, 3, null, 2);
+insert into grammar_positions values(10, 3, null, 3, null, 2);
+insert into grammar_positions values(11, 4, null, 3, null, 2);
+insert into grammar_positions values(12, 5, null, 3, null, 2);
+insert into grammar_positions values(13, 6, null, 3, null, 2);
+insert into grammar_positions values(14, 7, null, 3, null, 2);
 
 -- conjugation verb
 -- present

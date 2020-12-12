@@ -3,12 +3,12 @@ package morphological
 import (
 	"fmt"
 	"github.com/eakarpov/msaot/graphematical"
-	"github.com/eakarpov/msaot/lexicon"
+	"github.com/eakarpov/msaot/lexicon/dictionary"
 	"testing"
 )
 
 func TestBuildLemmaChains(t *testing.T) {
-	_, closeF, err := lexicon.InitMain()
+	_, closeF, err := dictionary.InitMain()
 	if err != nil {
 		return
 	}
@@ -44,7 +44,7 @@ func TestBuildLemmaChains(t *testing.T) {
 }
 
 func TestBuildSentenceLemmaChains(t *testing.T) {
-	_, closeF, err := lexicon.InitMain()
+	_, closeF, err := dictionary.InitMain()
 	if err != nil {
 		return
 	}

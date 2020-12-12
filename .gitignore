@@ -8,6 +8,7 @@
 
 credentials.json
 token.json
+dictionary.db-journal
 dictionary.csv
 
 # Test binary, built with `go test -c`
