@@ -43,7 +43,7 @@ type GrammarConfig struct {
 type FlexyConfig struct {
 	POS     pos.POS
 	Type    string
-	nConfig NounFlexyConfig
+	NConfig NounFlexyConfig
 }
 
 type NounFlexyConfig struct {
