@@ -3,7 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/eakarpov/msaot/graphematical"
+	_case "github.com/eakarpov/msaot/lexicon/case"
 	"github.com/eakarpov/msaot/lexicon/dictionary"
+	"github.com/eakarpov/msaot/lexicon/gender"
+	"github.com/eakarpov/msaot/lexicon/number"
+	"github.com/eakarpov/msaot/lexicon/pos"
+	"github.com/eakarpov/msaot/lexicon/synthesizer"
 	"github.com/eakarpov/msaot/morphological"
 	"github.com/eakarpov/msaot/syntax"
 	"github.com/urfave/cli/v2"
@@ -12,15 +17,18 @@ import (
 )
 
 func main() {
+	var genderVal int
+	var posVal string
+
 	app := &cli.App{
-		Name: "msaot",
+		Name:  "msaot",
 		Usage: "Interslavic natural language processing tool",
 		Commands: []*cli.Command{
 			{
 				Name:    "lemma",
 				Aliases: []string{"l"},
 				Usage:   "Enter a word to get list of lemmas",
-				Action:  func(c *cli.Context) error {
+				Action: func(c *cli.Context) error {
 					word := c.Args().First()
 					if word != "" {
 						_, close, err := dictionary.InitMain()
@@ -45,7 +53,7 @@ func main() {
 				Name:    "syntaxtree",
 				Aliases: []string{"st"},
 				Usage:   "Build a syntax tree of a sentence",
-				Action:  func(c *cli.Context) error {
+				Action: func(c *cli.Context) error {
 					sentence := c.Args().First()
 					if sentence != "" {
 						_, close, err := dictionary.InitMain()
@@ -73,13 +81,49 @@ func main() {
 				},
 			},
 			{
-				Name: "lat2cyr",
+				Name:    "lat2cyr",
 				Aliases: []string{"l2c"},
-				Usage: "Enter an Interslavic latin word form and recieve a cyrillic one",
+				Usage:   "Enter an Interslavic latin word form and recieve a cyrillic one",
 				Action: func(context *cli.Context) error {
 					word := context.Args().First()
 					result := graphematical.ImportedLat2SimpleCyr(word)
 					fmt.Println(result)
+					return nil
+				},
+			},
+			{
+				Name:    "declinator",
+				Aliases: []string{"decl"},
+				Usage:   "Enter a word (noun) and its gender and get the declination forms",
+				Flags: []cli.Flag{
+					&cli.IntFlag{
+						Name:        "gender",
+						Aliases:     []string{"g"},
+						Required:    true,
+						Usage:       "1 - masculine, 2 - feminine, 3 - neutral",
+						Destination: &genderVal,
+					},
+					&cli.StringFlag{
+						Name:        "pos",
+						Aliases:     []string{"p"},
+						Usage:       "n - noun, adj - adjective",
+						Value:       "n",
+						Destination: &posVal,
+					},
+				},
+				Action: func(context *cli.Context) error {
+					word := context.Args().First()
+					lemmas := synthesizer.GetWordForms(word, pos.POS(posVal), gender.Gender(genderVal), false)
+					fmt.Println("Normal form:", word)
+					for _, l := range lemmas {
+						str := fmt.Sprintf(
+							`[Case: %s, Number: %s] - %s`,
+							_case.ToString(l.NCase.Case),
+							number.ToString(l.NCase.Number),
+							l.Value,
+						)
+						fmt.Println(str)
+					}
 					return nil
 				},
 			},
