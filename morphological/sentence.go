@@ -2,25 +2,26 @@ package morphological
 
 import (
 	"github.com/eakarpov/msaot/graphematical"
+	"github.com/eakarpov/msaot/lexicon/lemmas"
 	"strings"
 )
 
 type SentenceLemmaChain struct {
 	ChainPosition int
-	Lemmas        []*Lemma
+	Lemmas        []*lemmas.Lemma
 }
 
 func BuildSentenceLemmaChains(chains [][]*LemmaOrStop) []SentenceLemmaChain {
 	res := make([]SentenceLemmaChain, 0)
 	for i, chain := range chains {
-		temp := make([]*Lemma, 0)
+		temp := make([]*lemmas.Lemma, 0)
 		for _, lemma := range chain {
 			if lemma.Stop {
 				res = append(res, SentenceLemmaChain{
 					ChainPosition: i,
 					Lemmas:        temp,
 				})
-				temp = make([]*Lemma, 0)
+				temp = make([]*lemmas.Lemma, 0)
 			} else {
 				temp = append(temp, lemma.Lemma)
 			}
@@ -30,7 +31,7 @@ func BuildSentenceLemmaChains(chains [][]*LemmaOrStop) []SentenceLemmaChain {
 }
 
 type LemmaOrStop struct {
-	Lemma *Lemma
+	Lemma *lemmas.Lemma
 	Stop  bool
 }
 

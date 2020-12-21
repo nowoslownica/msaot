@@ -1,12 +1,12 @@
 package syntax
 
 import (
+	"github.com/eakarpov/msaot/lexicon/lemmas"
 	"github.com/eakarpov/msaot/lexicon/pos"
-	"github.com/eakarpov/msaot/morphological"
 )
 
 // with comma separated
-func BuildSyntaxTree(sentence []*morphological.Lemma) (*SyntaxTree, error) {
+func BuildSyntaxTree(sentence []*lemmas.Lemma) (*SyntaxTree, error) {
 	var complexSentence = make([]*Sentence, 0)
 	// zero step - find single sentences
 
@@ -32,7 +32,7 @@ func BuildSyntaxTree(sentence []*morphological.Lemma) (*SyntaxTree, error) {
 	return &SyntaxTree{ ComplexSentence: complexSentence }, nil
 }
 
-func isParticiple(lemma *morphological.Lemma) bool {
+func isParticiple(lemma *lemmas.Lemma) bool {
 	vCase := lemma.VCase
 	if vCase.Number > 0 && vCase.Person > 0 && vCase.Gender > 0 {
 		return true
@@ -40,7 +40,7 @@ func isParticiple(lemma *morphological.Lemma) bool {
 	return false
 }
 
-func findPredicate(sentence []*morphological.Lemma) (*Predicate, error) {
+func findPredicate(sentence []*lemmas.Lemma) (*Predicate, error) {
 	var pr *Predicate
 
 	for _, word := range sentence {
@@ -52,7 +52,7 @@ func findPredicate(sentence []*morphological.Lemma) (*Predicate, error) {
 	return pr, nil
 }
 
-func findSubject(sentence []*morphological.Lemma) (*Subject, error) {
+func findSubject(sentence []*lemmas.Lemma) (*Subject, error) {
 	var s *Subject
 	for _, word := range sentence {
 		if word.Value == word.Normal &&

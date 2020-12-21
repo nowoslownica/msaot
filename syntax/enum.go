@@ -1,44 +1,46 @@
 package syntax
 
-import "github.com/eakarpov/msaot/morphological"
+import (
+	"github.com/eakarpov/msaot/lexicon/lemmas"
+)
 
 type Noun struct {
-	Value *morphological.Lemma
+	Value *lemmas.Lemma
 }
 
 type Verb struct {
-	Value *morphological.Lemma
+	Value *lemmas.Lemma
 }
 
 type Adjective struct {
-	Value *morphological.Lemma
+	Value *lemmas.Lemma
 }
 
 type POS struct {
 	Noun   *Noun
 	Verb   *Verb
-	Joiner *morphological.Lemma
+	Joiner *lemmas.Lemma
 }
 
 type Collocation struct {
 	Type        string
-	Preposition *morphological.Lemma
+	Preposition *lemmas.Lemma
 	Value       *POS
 	Dependent   []*POS
-	Joiner      *morphological.Lemma
+	Joiner      *lemmas.Lemma
 }
 
 type Subject struct {
-	Value     *morphological.Lemma
+	Value     *lemmas.Lemma
 	Dependent []*Collocation
 }
 
 type Predicate struct {
-	Value *morphological.Lemma
+	Value *lemmas.Lemma
 }
 
 type Sentence struct {
-	Joiner    *morphological.Lemma // before the item
+	Joiner    *lemmas.Lemma // before the item
 	Subject   *Subject
 	Predicate *Predicate
 }

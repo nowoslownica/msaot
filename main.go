@@ -72,6 +72,17 @@ func main() {
 					return fmt.Errorf("no input")
 				},
 			},
+			{
+				Name: "lat2cyr",
+				Aliases: []string{"l2c"},
+				Usage: "Enter an Interslavic latin word form and recieve a cyrillic one",
+				Action: func(context *cli.Context) error {
+					word := context.Args().First()
+					result := graphematical.ImportedLat2SimpleCyr(word)
+					fmt.Println(result)
+					return nil
+				},
+			},
 		},
 	}
 
