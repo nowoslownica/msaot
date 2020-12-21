@@ -57,6 +57,10 @@ func main() {
 	}
 	csvr := csv.NewReader(f)
 	csvr.FieldsPerRecord = -1
+	err = importer.LoadGPositions(mainDB)
+	if err != nil {
+		log.Fatalf("Unable to load gPositions: %v", err)
+	}
 	for {
 		record, err := csvr.Read()
 		if err == io.EOF {

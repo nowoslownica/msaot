@@ -56,7 +56,7 @@ func (l *Lemmas) getGrammarPosition(ctx context.Context, lemma *lemmas.Lemma) (*
 	).One(ctx, l.db)
 }
 
-func (l *Lemmas) AddLemma(ctx context.Context, lemma *lemmas.Lemma) error {
+func (l *Lemmas) AddOne(ctx context.Context, lemma *lemmas.Lemma) (models.Lemma, error) {
 	var l1 models.Lemma
 	l1.Pos = string(lemma.Pos)
 	l1.Value = lemma.Normal
@@ -65,14 +65,8 @@ func (l *Lemmas) AddLemma(ctx context.Context, lemma *lemmas.Lemma) error {
 			Int64: 0,
 			Valid: true,
 		}
-	} else {
-		gPosition, err := l.getGrammarPosition(ctx, lemma)
-		if err != nil {
-			return err
-		}
-		l1.ChangeSchema = gPosition.ID
 	}
 
 	err := l1.Insert(ctx, l.db, boil.Infer())
-	return err
+	return l1, err
 }

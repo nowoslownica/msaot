@@ -4,7 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/eakarpov/msaot/db/dblib"
+	"github.com/eakarpov/msaot/db/sqlite/models"
 	"github.com/eakarpov/msaot/lexicon/lemmas"
+	"github.com/eakarpov/msaot/lexicon/pos"
+	"github.com/eakarpov/msaot/lexicon/synthesizer"
+	"github.com/volatiletech/null/v8"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/sheets/v4"
 	"io/ioutil"
@@ -100,11 +104,94 @@ func GetData() *sheets.ValueRange {
 	return resp
 }
 
+var gPositions []*models.GrammarPosition
+
+func LoadGPositions(database dblib.DB) error {
+	grammarPositions, err := database.GPositions().GetAll(context.Background())
+	if err != nil {
+		return err
+	}
+	gPositions = grammarPositions
+	return nil
+}
+
+func GetGPositionByFlexyConfig(fConfig *lemmas.Lemma) *models.GrammarPosition {
+	caseVal := null.Int64{
+		Int64: 0,
+		Valid: false,
+	}
+	numVal := null.Int64{
+		Int64: 0,
+		Valid: false,
+	}
+	genVal := null.Int64{
+		Int64: 0,
+		Valid: false,
+	}
+	personVal := null.Int64{
+		Int64: 0,
+		Valid: false,
+	}
+	tenseVal := null.Int64{
+		Int64: 0,
+		Valid: false,
+	}
+	if fConfig.NCase != nil {
+		numVal = null.Int64{
+			Int64: int64(fConfig.NCase.Gender),
+			Valid: true,
+		}
+		caseVal = null.Int64{
+			Int64: int64(fConfig.NCase.Case),
+			Valid: true,
+		}
+		if fConfig.NCase.Person != nil {
+			personVal = null.Int64{
+				Int64: int64(*fConfig.NCase.Person),
+				Valid: true,
+			}
+		}
+	}
+	if fConfig.VCase != nil {
+		numVal = null.Int64{
+			Int64: int64(fConfig.VCase.Number),
+			Valid: true,
+		}
+		tenseVal = null.Int64{
+			Int64: int64(fConfig.VCase.Tense),
+			Valid: true,
+		}
+		personVal = null.Int64{
+			Int64: int64(fConfig.VCase.Person),
+			Valid: true,
+		}
+	}
+	for _, gPos := range gPositions {
+		if gPos.GNumber == numVal &&
+			gPos.GCase == caseVal &&
+			gPos.GGender == genVal &&
+			gPos.GPerson == personVal &&
+			gPos.GTense == tenseVal {
+			return gPos
+		}
+	}
+	return nil
+}
+
 func ImportRecord(database dblib.DB, record []string) {
 	if len(record) > 3 {
 		lemma := lemmas.GetLemmaConfig(record[3])
 		lemma.Normal = record[1]
-		_ = database.Lemmas().AddLemma(context.Background(), lemma)
+		l, _ := database.Lemmas().AddOne(context.Background(), lemma)
+		var wForms []*lemmas.Lemma
+		switch lemma.Pos {
+		case pos.NOUN:
+			wForms = synthesizer.GetWordForms(lemma.Normal, lemma.Pos, lemma.NCase.Gender, *lemma.Animate)
+		}
+		for _, wForm := range wForms {
+			gPos := GetGPositionByFlexyConfig(wForm)
+			_, _ = database.Flexies().AddOne(context.Background(), wForm, l.ID, gPos.ID)
+		}
 		fmt.Println(lemma.Normal)
 	}
 }
