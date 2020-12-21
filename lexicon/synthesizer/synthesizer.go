@@ -29,11 +29,12 @@ func getNounForms(word string, dType GrammarDeclensionType) []*lemmas.Lemma {
 }
 
 func GetNounFormsByEndingAndGender(word string, gend gender.Gender) []*lemmas.Lemma {
+	lastLetter := rune(word[len(word) - 1])
 	for _, dType := range declensions {
 		if dType.Ending != "" && strings.HasSuffix(word, dType.Ending) && gend == dType.Gender {
 			return getNounForms(word, dType)
 		} else if dType.Ending == "" &&
-			!graphematical.IsVowel(rune(word[len(word) - 1])) &&
+			!graphematical.IsVowel(lastLetter) &&
 			gend == dType.Gender {
 			return getNounForms(word, dType)
 		}

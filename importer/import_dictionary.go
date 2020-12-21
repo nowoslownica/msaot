@@ -186,11 +186,19 @@ func ImportRecord(database dblib.DB, record []string) {
 		var wForms []*lemmas.Lemma
 		switch lemma.Pos {
 		case pos.NOUN:
-			wForms = synthesizer.GetWordForms(lemma.Normal, lemma.Pos, lemma.NCase.Gender, *lemma.Animate)
+			animate := false
+			if lemma.Animate != nil {
+				animate = *lemma.Animate
+			}
+			wForms = synthesizer.GetWordForms(lemma.Normal, lemma.Pos, lemma.NCase.Gender, animate)
 		}
-		for _, wForm := range wForms {
-			gPos := GetGPositionByFlexyConfig(wForm)
-			_, _ = database.Flexies().AddOne(context.Background(), wForm, l.ID, gPos.ID)
+		if wForms != nil {
+			for _, wForm := range wForms {
+				gPos := GetGPositionByFlexyConfig(wForm)
+				if gPos != nil {
+					_, _ = database.Flexies().AddOne(context.Background(), wForm, l.ID, gPos.ID)
+				}
+			}
 		}
 		fmt.Println(lemma.Normal)
 	}

@@ -61,15 +61,20 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to load gPositions: %v", err)
 	}
+	index := 0
 	for {
 		record, err := csvr.Read()
 		if err == io.EOF {
+			break
+		}
+		if index > 100 {
 			break
 		}
 		if err != nil {
 			log.Fatalf("Error while reading file")
 		}
 		importer.ImportRecord(mainDB, record)
+		index++
 	}
 }
 
