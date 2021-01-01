@@ -1,6 +1,7 @@
 package syntax
 
 import (
+	_case "github.com/eakarpov/msaot/lexicon/case"
 	"github.com/eakarpov/msaot/lexicon/lemmas"
 	"github.com/eakarpov/msaot/lexicon/pos"
 )
@@ -56,6 +57,8 @@ func findSubject(sentence []*lemmas.Lemma) (*Subject, error) {
 	var s *Subject
 	for _, word := range sentence {
 		if word.Value == word.Normal &&
+			word.NCase != nil &&
+			word.NCase.Case == _case.NOMINATIVE &&
 			(word.Pos == pos.NOUN || word.Pos == pos.PRONOUN) {
 			// without conjunction group
 			s = &Subject{

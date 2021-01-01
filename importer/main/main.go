@@ -47,7 +47,7 @@ func main() {
 	}
 	defer f.Close()
 	mainDB := db.GetByName("dictionary.db")
-	err = mainDB.InitDB()
+	err = mainDB.InitDB(false)
 	if err != nil {
 		log.Fatalf("Unable to init db: %v", err)
 	}

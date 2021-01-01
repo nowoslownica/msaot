@@ -15,7 +15,7 @@ func TestBuildSyntaxTree(t *testing.T) {
 	}
 	defer close()
 	tokenizer := graphematical.Tokenizer{}
-	tokenizer.Parse("Я сказал, что я хотел.")
+	tokenizer.Parse("Я есмь сказал, что я есмь хотел.")
 	LoS, err := morphological.BuildLemmaChains(tokenizer.Items)
 	if err != nil {
 		t.Error(err)
@@ -26,6 +26,9 @@ func TestBuildSyntaxTree(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		fmt.Println(tree.ComplexSentence[0].Subject.Value)
+		fmt.Println(len(tree.ComplexSentence)) // 2
+		fmt.Println(tree.ComplexSentence[0].Predicate.Value) // есмь сказал
+		fmt.Println(tree.ComplexSentence[0].Joiner) // empty
+		fmt.Println(tree.ComplexSentence[0].Subject.Value) // я +
 	}
 }

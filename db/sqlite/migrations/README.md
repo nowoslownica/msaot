@@ -1,0 +1,1 @@
+Could not reuse the sql scripts for both full and structure configurations

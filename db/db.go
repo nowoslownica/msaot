@@ -2,7 +2,8 @@ package db
 
 import (
 	"database/sql"
-	"github.com/eakarpov/msaot/db/sqlite/migrations"
+	"github.com/eakarpov/msaot/db/sqlite/migrations/full"
+	"github.com/eakarpov/msaot/db/sqlite/migrations/structure"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"path/filepath"
 )
@@ -40,7 +41,7 @@ func (c *sqliteDB) Init() error {
 	if err != nil {
 		return err
 	}
-	err = c.InitDB()
+	err = c.InitDB(true)
 	if err != nil {
 		return err
 	}
@@ -52,6 +53,9 @@ func (c *sqliteDB) Close() error {
 	return c.db.Close()
 }
 
-func (c *sqliteDB) InitDB() error {
-	return migrations.MigrateSchema(c.name)
+func (c *sqliteDB) InitDB(data bool) error {
+	if data {
+		return full.MigrateSchema(c.name)
+	}
+	return structure.MigrateSchema(c.name)
 }

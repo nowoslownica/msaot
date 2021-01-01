@@ -42,7 +42,7 @@ func GetNounFormsByEndingAndGender(word string, gend gender.Gender) []*lemmas.Le
 	return nil
 }
 
-func GetAdjectiveFormsByEnding() []lemmas.Lemma {
+func GetAdjectiveFormsByEnding(word string) []*lemmas.Lemma {
 	return nil
 }
 
@@ -50,6 +50,8 @@ func GetWordForms(word string, posValue pos.POS, genderValue gender.Gender, anim
 	switch posValue {
 	case pos.NOUN:
 		return GetNounFormsByEndingAndGender(word, genderValue)
+	case pos.ADJECTIVE:
+		return GetAdjectiveFormsByEnding(word)
 	default:
 		return nil
 	}

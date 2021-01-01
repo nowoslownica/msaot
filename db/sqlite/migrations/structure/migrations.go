@@ -1,4 +1,4 @@
-package migrations
+package structure
 
 import (
 	"database/sql"
@@ -7,7 +7,8 @@ import (
 	bindata "github.com/golang-migrate/migrate/v4/source/go_bindata"
 )
 
-//go:generate go run github.com/go-bindata/go-bindata/v3/go-bindata -pkg migrations -prefix "sqlite/migrations" -ignore .*\.go -o bindata.go ./...
+
+//go:generate go run github.com/go-bindata/go-bindata/v3/go-bindata -pkg structure -prefix "sqlite/migrations/structure" -ignore .*\.go -o bindata.go ./...
 //go:generate go fmt bindata.go
 
 // MigrateSchema update db schema to last version saved with go-bindata

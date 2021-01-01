@@ -6,6 +6,11 @@ insert into lemmas values(5, 'по', 'prep', null);
 insert into lemmas values(6, 'красивый', 'adj', 5);
 insert into lemmas values(7, 'город', 'n', 5);
 insert into lemmas values(8, 'быть', 'v', 20);
+insert into lemmas values(9, 'сказать', 'v', 11);
+insert into lemmas values(10, 'хотеть', 'v', 13);
+insert into lemmas values(11, 'что', 'pron', 25);
+insert into lemmas values(12, 'сказал', 'ptcp', 0);
+insert into lemmas values(13, 'хотел', 'ptcp', 0);
 
 insert into flexies values(1, 'мама', 1, 1);
 insert into flexies values(2, 'мамы', 1, 2);
@@ -29,3 +34,6 @@ insert into flexies values(18, 'гулять', 4, 0);
 insert into flexies values(19, 'по', 5, 0);
 insert into flexies values(20, 'красивому', 6, 4);
 insert into flexies values(21, 'городу', 7, 4);
+insert into flexies values(22, 'сказал', 9, 27);
+insert into flexies values(23, 'хотел', 10, 27);
+insert into flexies values(24, 'что', 11, 1);
