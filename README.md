@@ -1,5 +1,15 @@
 # msaot
 
+## Build
+
+* Install go
+* Run ```go build```
+* Build is ready - run `./msaot -h` binary
+
+## Transcribe
+
+```./msaot l2c <word>```
+
 ## Regenerate models
 
 ### Prerequisites
